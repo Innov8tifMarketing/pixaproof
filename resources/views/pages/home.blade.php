@@ -5,7 +5,7 @@
 
 @section('content')
     {{-- Section 1: Hero --}}
-    <section class="relative isolate overflow-hidden px-4 pt-32 pb-20 lg:pt-40 lg:pb-28">
+    <section class="relative isolate overflow-hidden px-4 pt-24 pb-20 lg:pt-28 lg:pb-28">
         {{-- Background: Gradient + grid + noise --}}
         <div class="absolute inset-0 -z-10 noise-overlay">
             <div class="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-primary-50/50"></div>

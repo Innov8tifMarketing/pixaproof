@@ -44,7 +44,7 @@ host('prod')
     ->set('deploy_path', '/home/deployer/pixaproof')
     ->set('branch', 'main')
     ->set('labels', ['stage' => 'prod'])
-    ->set('url', 'https://pixaproof.innov8tif.com');
+    ->set('url', 'https://pixaproof.com');
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SHARED RESOURCES
