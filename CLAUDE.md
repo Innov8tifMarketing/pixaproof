@@ -77,15 +77,21 @@ Three-way toggle (light/dark/system) in navbar. State in localStorage.
 ### Active Pages
 | Route | View | Name | Notes |
 |-------|------|------|-------|
-| `/` | pages.home | home | Enterprise mega landing (9 sections) |
+| `/` | pages.home | home | Enterprise mega landing (10 sections) |
 | `/contact` | pages.contact | contact | Demo request form (Livewire) |
 | `/privacy` | pages.privacy | privacy | Privacy policy |
 
 ### Anchor Links (on homepage)
-`/#challenge` `/#solution` `/#how-it-works` `/#solutions` `/#technology` `/#about` `/#faq`
+`/#challenge` `/#solution` `/#how-it-works` `/#demos` `/#solutions` `/#technology` `/#about` `/#faq`
 
 ### 301 Redirects
 All legacy routes (technology, about, enterprise, solutions/*, pricing, etc.) redirect to homepage anchors or `/contact`. See `routes/web.php` for full list.
+
+## Deployment
+
+**Platform:** Deployer (`deploy.php`). Deploy via `dep deploy prod`. SSH via `dep ssh prod`.
+
+**Git LFS:** Video assets in `public/videos/` are tracked via git-lfs. After pushing, always verify LFS objects are uploaded: `git lfs push origin main --all`.
 
 ## Environment Variables (Production)
 
