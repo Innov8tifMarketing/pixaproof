@@ -34,8 +34,9 @@ set('writable_use_sudo', false);
 
 set('forward_agent', false);
 
-// Use clone strategy so git-lfs files are resolved during deployment
+// Use clone strategy for git-lfs; skip smudge during clone (LFS pulled separately)
 set('update_code_strategy', 'clone');
+set('env', ['GIT_LFS_SKIP_SMUDGE' => '1']);
 
 // ═══════════════════════════════════════════════════════════════════════════
 // HOSTS
@@ -495,8 +496,21 @@ task('storage:link-custom', function () {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
+// TASKS: GIT LFS
+// ═══════════════════════════════════════════════════════════════════════════
+
+desc('Pull git-lfs objects from remote after code checkout');
+task('lfs:pull', function () {
+    $repo = get('repository');
+    run("cd {{release_path}} && git remote set-url origin {$repo} && git lfs pull");
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
 // DEPLOYMENT HOOKS
 // ═══════════════════════════════════════════════════════════════════════════
+
+// After code checkout, pull LFS objects from GitHub
+after('deploy:update_code', 'lfs:pull');
 
 // After vendors installed, rebuild config cache
 after('deploy:vendors', 'artisan:config:cache');
