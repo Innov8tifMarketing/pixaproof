@@ -1,7 +1,7 @@
 # PixaProof Marketing Site
 
 ## Project Overview
-Marketing website for PixaProof - an image authenticity verification platform by MyNasional eKYC Sdn. Bhd.
+Marketing website for PixaProof - an image authenticity verification platform by Innov8tif Solutions Sdn. Bhd.
 
 **Product Model:**
 | Edition | Target | Entry |
@@ -21,7 +21,7 @@ All project documentation is in `.claude/docs/`:
 | [tech-stack.md](.claude/docs/tech-stack.md) | Laravel 12, Livewire 3, Tailwind 4, devices.css |
 | [architecture.md](.claude/docs/architecture.md) | Directory structure, patterns, routes, schema |
 | [stylesheet-guidelines.md](.claude/docs/stylesheet-guidelines.md) | Colors (primary/neutral/accent), typography, components |
-| [pixaproof-company.md](.claude/docs/pixaproof-company.md) | Innov8tif / MyNasional eKYC, brand identity, certifications |
+| [pixaproof-company.md](.claude/docs/pixaproof-company.md) | Innov8tif, brand identity, certifications |
 | [pixaproof-product.md](.claude/docs/pixaproof-product.md) | Enterprise SDK, API, PIEA technology, pricing |
 | [site-structure.md](.claude/docs/site-structure.md) | Anchor navigation, routes, CTAs |
 

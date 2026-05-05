@@ -9,7 +9,7 @@
 | Tech Stack | [tech-stack.md](./tech-stack.md) | Laravel 12, Livewire 3, Tailwind 4, devices.css |
 | Architecture | [architecture.md](./architecture.md) | Directory structure, patterns, routes, schema |
 | **Stylesheet** | [stylesheet-guidelines.md](./stylesheet-guidelines.md) | Colors (primary/neutral/accent), typography, components |
-| Company | [pixaproof-company.md](./pixaproof-company.md) | Innov8tif / MyNasional eKYC, brand, certifications |
+| Company | [pixaproof-company.md](./pixaproof-company.md) | Innov8tif, brand, certifications |
 | Product | [pixaproof-product.md](./pixaproof-product.md) | Enterprise SDK, API, PIEA technology |
 | Site Structure | [site-structure.md](./site-structure.md) | Anchor navigation, routes, CTAs |
 

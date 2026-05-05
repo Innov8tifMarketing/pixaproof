@@ -1,7 +1,7 @@
 # PixaProof - Company Context
 
 ## Parent Organization
-**MyNasional eKYC Sdn. Bhd.**
+**Innov8tif Solutions Sdn. Bhd.**
 
 ### Company Profile
 - 14+ years of experience in identity verification and fraud prevention
@@ -12,7 +12,7 @@
 ### Corporate Structure
 - **Innov8tif Solutions Pte. Ltd.** (Singapore) — Technology and operations
 - **NexG Bhd.** — Parent holding company
-- **MyNasional eKYC Sdn. Bhd.** — Malaysian entity, PixaProof brand owner
+- **Innov8tif Solutions Sdn. Bhd.** — Malaysian entity, PixaProof brand owner
 
 ### Product Portfolio
 1. **EMAS eKYC** - Flagship identity verification platform (Active)

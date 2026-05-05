@@ -839,7 +839,7 @@
                     Built by Southeast Asia's Most Experienced Identity Verification Team
                 </h2>
                 <p class="text-neutral-600 text-lg max-w-3xl mx-auto">
-                    PixaProof is developed by MyNasional eKYC (formerly Innov8tif Solutions), Southeast Asia's largest identity assurance provider. Over a decade of experience securing identity workflows for banks, insurers, and government agencies across ASEAN.
+                    PixaProof is developed by Innov8tif, Southeast Asia's largest identity assurance provider. Over a decade of experience securing identity workflows for banks, insurers, and government agencies across ASEAN.
                 </p>
             </div>
 
