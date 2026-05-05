@@ -71,7 +71,7 @@ All legacy multi-page routes redirect to homepage anchors or the contact page. S
 
 ### Legal
 - Privacy Policy
-- © Innov8tif Solutions Sdn. Bhd.
+- © Innov8tif Solutions Pte. Ltd.
 
 ---
 

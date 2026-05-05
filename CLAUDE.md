@@ -1,7 +1,7 @@
 # PixaProof Marketing Site
 
 ## Project Overview
-Marketing website for PixaProof - an image authenticity verification platform by Innov8tif Solutions Sdn. Bhd.
+Marketing website for PixaProof - an image authenticity verification platform by Innov8tif Solutions Pte. Ltd.
 
 **Product Model:**
 | Edition | Target | Entry |

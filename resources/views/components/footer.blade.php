@@ -45,7 +45,7 @@
         <!-- Bottom Bar -->
         <div class="mt-12 border-t border-neutral-200 pt-8 flex flex-col items-center justify-between gap-4 md:flex-row">
             <div class="text-sm text-neutral-500">
-                &copy; {{ date('Y') }} Innov8tif Solutions Sdn. Bhd. All rights reserved.
+                &copy; {{ date('Y') }} Innov8tif Solutions Pte. Ltd. All rights reserved.
             </div>
             <div class="flex gap-6">
                 <a href="{{ route('privacy') }}" class="text-sm text-neutral-500 transition hover:text-primary-600">
