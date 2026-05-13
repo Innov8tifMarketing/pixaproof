@@ -1,59 +1,148 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PixaProof Marketing Site
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Marketing website for **PixaProof** — an image authenticity verification platform by Innov8tif Solutions Pte. Ltd.
 
-## About Laravel
+🌐 **Production:** [https://pixaproof.com](https://pixaproof.com)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## What This Is
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+A public-facing marketing site that presents PixaProof's two product editions:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Edition | Audience | Entry |
+|---------|----------|-------|
+| **Community Edition** | Individuals, small teams | App Store / Google Play |
+| **Enterprise Solutions** | Organizations | SDK / API integration |
 
-## Learning Laravel
+The site is a single-page enterprise landing experience (homepage with anchor navigation to Challenge → Solution → How It Works → Demos → Solutions → Technology → About → FAQ), plus `/contact` (Livewire demo request form) and `/privacy`. Legacy routes 301-redirect to homepage anchors. See [`.claude/docs/site-structure.md`](.claude/docs/site-structure.md) for the full map.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Tech Stack
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **PHP 8.4** / **Laravel 12** (streamlined `bootstrap/app.php` structure)
+- **Livewire 3** for interactive components (contact form, etc.)
+- **Tailwind CSS v4** (CSS-first config via `@theme`)
+- **SQLite** for persistence (lightweight, file-based)
+- **Vite** for asset bundling
+- **devices.css** for device mockups in demo sections
+- **Git LFS** for video assets in `public/videos/`
 
-## Laravel Sponsors
+Project-specific documentation lives in `.claude/docs/` — see [`.claude/docs/index.md`](.claude/docs/index.md) for the navigation index.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Quick Start
 
-### Premium Partners
+```bash
+composer setup     # Install dependencies, run migrations, build assets
+composer dev       # Run dev server, queue, logs, and vite concurrently
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Tests:
 
-## Contributing
+```bash
+php artisan test --compact
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Format:
 
-## Code of Conduct
+```bash
+vendor/bin/pint --dirty
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Deployment
 
-## Security Vulnerabilities
+Deployment is driven by **[Deployer](https://deployer.org/)** via [`deploy.php`](deploy.php). The recipe builds on `recipe/laravel.php` and adds project-specific tasks for SQLite backups, safe migrations, Git LFS pulls, supervisor-managed queue workers, PHP-FPM restarts, and post-deploy HTTP health checks with automatic rollback on failure.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Server
+
+| Detail | Value |
+|--------|-------|
+| **Host** | `prod` (`47.237.191.213`) |
+| **Cloud Provider** | Alibaba Cloud (Singapore region) |
+| **Deploy User** | `deployer` |
+| **Deploy Path** | `/home/deployer/pixaproof` |
+| **Branch** | `main` |
+| **Releases Kept** | 5 (auto-rotated) |
+
+> **SSH access:** Reach out to **Jin Xuan** or **Nathan** to be added to the `deployer` user's authorized keys.
+
+### Common Deployer Commands
+
+Run these from the project root on your local machine:
+
+```bash
+# Deploy current `main` to production
+dep deploy prod
+
+# SSH into the production server (drops you into the current release)
+dep ssh prod
+
+# Roll back to the previous release
+dep rollback prod
+
+# Tail the last 50 lines of the Laravel log
+dep artisan:log prod
+
+# Show pending Supervisor queue worker status
+dep queue:status prod
+
+# Restart queue workers
+dep queue:restart prod
+
+# Refresh config/route/view caches
+dep artisan:cache:refresh prod
+
+# List database backups
+dep db:backups prod
+
+# Restore a database backup (interactive — prompts for which backup to restore)
+dep db:restore prod
+
+# Put the app into maintenance mode (prints a bypass secret)
+dep artisan:down prod
+
+# Bring the app back up
+dep artisan:up prod
+
+# Verify deployment health via HTTP check
+dep deploy:verify prod
+
+# List all available tasks
+dep list
+```
+
+### Deploy Flow
+
+`dep deploy prod` runs roughly:
+
+1. Clone repo (LFS smudge skipped) → `lfs:pull` pulls video assets from GitHub
+2. `composer install` → cache config
+3. `npm ci` + `npm run build`
+4. Ensure SQLite file exists → backup current DB → run pending migrations safely
+5. Maintenance mode ON → swap symlink → restart PHP-FPM → maintenance OFF → restart queue → refresh caches
+6. HTTP health check (5 retries) → auto-rollback if it fails
+
+### Git LFS Note
+
+Video assets in `public/videos/` are tracked via Git LFS. After pushing changes that touch LFS-tracked files, always verify objects are uploaded:
+
+```bash
+git lfs push origin main --all
+```
+
+Otherwise the production deploy will fail to fetch the videos.
+
+## Environment Variables (Production)
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://pixaproof.com
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.example.com
+MAIL_FROM_ADDRESS=noreply@pixaproof.com
+```
+
+The `.env` file lives on the server under `/home/deployer/pixaproof/shared/.env` and is symlinked into each release.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Proprietary — © Innov8tif Solutions Pte. Ltd.
