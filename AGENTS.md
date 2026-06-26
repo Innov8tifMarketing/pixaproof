@@ -1,3 +1,117 @@
+# PixaProof Marketing Site
+
+## Project Overview
+Marketing website for PixaProof - an image authenticity verification platform by Innov8tif Solutions Pte. Ltd.
+
+**Product Model:**
+| Edition | Target | Entry |
+|---------|--------|-------|
+| **Community Edition** | Individuals, small teams | App Store / Google Play |
+| **Enterprise Solutions** | Organizations | SDK integration |
+
+## Implementation Plan
+See **[IMPLEMENTATION.md](.claude/IMPLEMENTATION.md)** for detailed TODO items, component specs, and implementation guidelines.
+
+## Documentation
+All project documentation is in `.claude/docs/`:
+
+| Document | Purpose |
+|----------|---------|
+| [index.md](.claude/docs/index.md) | Documentation navigation and keyword index |
+| [tech-stack.md](.claude/docs/tech-stack.md) | Laravel 12, Livewire 3, Tailwind 4, devices.css |
+| [architecture.md](.claude/docs/architecture.md) | Directory structure, patterns, routes, schema |
+| [stylesheet-guidelines.md](.claude/docs/stylesheet-guidelines.md) | Colors (primary/neutral/accent), typography, components |
+| [pixaproof-company.md](.claude/docs/pixaproof-company.md) | Innov8tif, brand identity, certifications |
+| [pixaproof-product.md](.claude/docs/pixaproof-product.md) | Enterprise SDK, API, PIEA technology, pricing |
+| [site-structure.md](.claude/docs/site-structure.md) | Anchor navigation, routes, CTAs |
+
+### Website Content (pages/)
+| Page | Document | Status |
+|------|----------|--------|
+| Homepage | [pages/homepage.md](.claude/docs/pages/homepage.md) | Active — enterprise mega landing |
+| Banking | [pages/solutions-banking.md](.claude/docs/pages/solutions-banking.md) | Archived — in `/#solutions` tabs |
+| Insurance | [pages/solutions-insurance.md](.claude/docs/pages/solutions-insurance.md) | Archived — in `/#solutions` tabs |
+| Government | [pages/solutions-government.md](.claude/docs/pages/solutions-government.md) | Archived — redirects to `/` |
+| E-commerce | [pages/solutions-ecommerce.md](.claude/docs/pages/solutions-ecommerce.md) | Archived — redirects to `/` |
+| Healthcare | [pages/solutions-healthcare.md](.claude/docs/pages/solutions-healthcare.md) | Archived — redirects to `/` |
+| Technology | [pages/technology.md](.claude/docs/pages/technology.md) | Archived — in `/#technology` section |
+| Developers | [pages/developers.md](.claude/docs/pages/developers.md) | Archived — not yet implemented |
+
+## Skills
+
+### Project Consultant
+**Location**: `.claude/skills/project-consultant/SKILL.md`
+
+Use before implementing features to get relevant context from docs. Reads index, identifies relevant documents, returns patterns and references.
+
+### Auto-Documenter
+**Location**: `.claude/skills/auto-documenter/SKILL.md`
+
+Use after making architectural changes or learning new information about the company/product. Updates relevant docs and index.
+
+## Quick Start
+
+```bash
+composer setup     # Install dependencies, run migrations, build assets
+composer dev       # Run dev server, queue, logs, vite concurrently
+```
+
+## Key Patterns
+
+### Actions
+Business logic in `app/Actions/`. Single-purpose classes.
+
+### Livewire Concerns
+Reusable traits in `app/Livewire/Concerns/`. E.g., `WithRateLimiting`.
+
+### Layouts
+1. `base.blade.php` - HTML skeleton, dark mode
+2. `app.blade.php` - Navbar, footer
+3. Page views extend `app`
+
+### Dark Mode
+Three-way toggle (light/dark/system) in navbar. State in localStorage.
+
+## Routes
+
+### Active Pages
+| Route | View | Name | Notes |
+|-------|------|------|-------|
+| `/` | pages.home | home | Enterprise mega landing (10 sections) |
+| `/contact` | pages.contact | contact | Demo request form (Livewire) |
+| `/privacy` | pages.privacy | privacy | Privacy policy |
+
+### Anchor Links (on homepage)
+`/#challenge` `/#solution` `/#how-it-works` `/#demos` `/#solutions` `/#technology` `/#about` `/#faq`
+
+### 301 Redirects
+All legacy routes (technology, about, enterprise, solutions/*, pricing, etc.) redirect to homepage anchors or `/contact`. See `routes/web.php` for full list.
+
+## Deployment
+
+**Platform:** Deployer (`deploy.php`). Deploy via `dep deploy prod`. SSH via `dep ssh prod`.
+
+**Git LFS:** Video assets in `public/videos/` are tracked via git-lfs. After pushing, always verify LFS objects are uploaded: `git lfs push origin main --all`.
+
+## Environment Variables (Production)
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://pixaproof.com
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.example.com
+MAIL_FROM_ADDRESS=noreply@pixaproof.com
+```
+
+## Source Files
+Documentation in `.claude/` is copied (not symlinked) from `doom_emacs_roam_files/pixaproof/`. Original Roam source files:
+- `20251217T141900--pixaproof.org`
+- `pixaproof-product-documentation`
+
+===
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
