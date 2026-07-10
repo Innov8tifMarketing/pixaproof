@@ -91,6 +91,27 @@ set('migrate_backup_path', '{{deploy_path}}/shared/data/backups');
 set('migrate_backup_keep', 5);
 
 // ═══════════════════════════════════════════════════════════════════════════
+// OFFSITE BACKUP SETTINGS (Backblaze B2 via rclone)
+// ═══════════════════════════════════════════════════════════════════════════
+
+// rclone is installed as a no-sudo static binary (shared with the innov8tif
+// deploy on this box); the `b2` remote lives in deployer's
+// ~/.config/rclone/rclone.conf (chmod 600). Backups land under a pixaproof/
+// prefix in the shared bucket.
+set('rclone_bin', '/home/deployer/bin/rclone');
+set('rclone_remote', 'b2');
+set('offsite_bucket', 'doom-innov8tif-backup');
+set('offsite_prefix', 'pixaproof');
+set('offsite_keep_days', 30);
+
+// Server-only, non-git paths mirrored offsite (relative to {{deploy_path}}/shared).
+set('offsite_media_paths', [
+    'data/media',           // runtime uploads served at /media
+    'storage/app/public',   // public disk (served at /storage)
+    'storage/app/private',  // private disk
+]);
+
+// ═══════════════════════════════════════════════════════════════════════════
 // HEALTH CHECK SETTINGS
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -230,6 +251,110 @@ task('db:restore', function () {
     if (test('[ -f {{deploy_path}}/current/artisan ]')) {
         run('cd {{deploy_path}}/current && {{bin/php}} artisan up');
     }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// TASKS: OFFSITE BACKUP (Backblaze B2)
+// ═══════════════════════════════════════════════════════════════════════════
+
+desc('Back up SQLite DB + media + .env offsite to Backblaze B2');
+task('backup:offsite', function () {
+    $stage = getStage();
+    $rclone = get('rclone_bin');
+    $remote = get('rclone_remote');
+    $bucket = get('offsite_bucket');
+    $prefix = get('offsite_prefix');
+    $keepDays = get('offsite_keep_days', 30);
+    $mediaPaths = get('offsite_media_paths', []);
+    $keepLocal = get('migrate_backup_keep', 5);
+    $timestamp = date('Y-m-d-His');
+    $sqlitePath = get('sqlite_path');
+
+    $shared = '{{deploy_path}}/shared';
+    $base = "{$remote}:{$bucket}/{$prefix}";
+
+    // Preflight: rclone present + remote/bucket reachable.
+    if (! test("[ -x {$rclone} ]")) {
+        throw new \RuntimeException("rclone not found at {$rclone} — run the offsite tooling install first");
+    }
+    run("{$rclone} lsd {$remote}:{$bucket} > /dev/null");
+
+    // 1. SQLite — consistent online snapshot via .backup (handles WAL), then
+    //    integrity-checked, gzipped, atomic. `cp` would miss in-flight writes.
+    if (! test("[ -f {$sqlitePath} ]")) {
+        throw new \RuntimeException("SQLite db not found at {$sqlitePath}");
+    }
+    $localDbDir = "{$shared}/data/backups";
+    $dbFile = "{$localDbDir}/database_{$stage}_{$timestamp}.sqlite.gz";
+    $tmpSnap = "{$localDbDir}/.snap_{$timestamp}.sqlite";
+
+    $dumpCmd = <<<BASH
+        set -eo pipefail
+        mkdir -p {$localDbDir}
+        rm -f {$tmpSnap} {$dbFile}.tmp
+        sqlite3 {$sqlitePath} ".backup '{$tmpSnap}'"
+        [ "\$(sqlite3 {$tmpSnap} 'PRAGMA integrity_check;')" = "ok" ]
+        gzip -c {$tmpSnap} > {$dbFile}.tmp
+        gzip -t {$dbFile}.tmp
+        mv {$dbFile}.tmp {$dbFile}
+        rm -f {$tmpSnap}
+        BASH;
+    run($dumpCmd);
+    $dbName = basename($dbFile);
+    info("SQLite snapshot created: {$dbName}");
+
+    run("{$rclone} copy {$dbFile} {$base}/db/ --transfers 4");
+    run("{$rclone} check {$localDbDir} {$base}/db --include {$dbName} --one-way");
+    info("SQLite snapshot uploaded + verified → {$base}/db/{$dbName}");
+
+    // 2. Media dirs — incremental mirror.
+    foreach ($mediaPaths as $rel) {
+        $src = "{$shared}/{$rel}";
+        $dst = "{$base}/files/{$rel}";
+        if (! test("[ -d {$src} ]")) {
+            warning("Skipping missing media path: {$rel}");
+
+            continue;
+        }
+        run("{$rclone} sync {$src} {$dst} --fast-list --transfers 8 --checkers 16 --exclude 'livewire-tmp/**'", timeout: 1800);
+        info("Mirrored: {$rel}");
+    }
+
+    // 3. Secrets — .env to the private bucket (B2 encrypts server-side at rest).
+    // Fixed name, overwritten each run; prior versions are retained 30d by the
+    // bucket's B2 versioning lifecycle. Dated + age-pruned would NOT work here:
+    // copyto preserves the source .env's mtime, which B2 reports back verbatim,
+    // so --min-age deletes a freshly-uploaded but long-unchanged .env at once.
+    run("{$rclone} copyto {$shared}/.env {$base}/config/env_{$stage}.env");
+    info('.env uploaded');
+
+    // 4. Retention — DB snapshots are created fresh each run (mtime = now), so
+    // age-based prune is correct for them.
+    run("{$rclone} delete {$base}/db --min-age {$keepDays}d");
+    info("Offsite retention applied (>{$keepDays}d pruned)");
+
+    $backups = run("ls -1t {$localDbDir}/database_{$stage}_*.sqlite.gz 2>/dev/null || echo ''");
+    $files = array_filter(explode("\n", trim($backups)));
+    if (count($files) > $keepLocal) {
+        foreach (array_slice($files, $keepLocal) as $old) {
+            run("rm -f {$old}");
+        }
+    }
+
+    info("Offsite backup complete — stage={$stage} @ {$timestamp}");
+});
+
+desc('List offsite backups on Backblaze B2');
+task('backup:offsite:list', function () {
+    $rclone = get('rclone_bin');
+    $base = get('rclone_remote').':'.get('offsite_bucket').'/'.get('offsite_prefix');
+
+    writeln('── DB snapshots ──');
+    writeln(run("{$rclone} lsl {$base}/db 2>/dev/null || echo '(none)'"));
+    writeln('── Media mirror (top level) ──');
+    writeln(run("{$rclone} lsd {$base}/files 2>/dev/null || echo '(none)'"));
+    writeln('── Config (.env) ──');
+    writeln(run("{$rclone} lsl {$base}/config 2>/dev/null || echo '(none)'"));
 });
 
 desc('Run migrations safely with backup');
