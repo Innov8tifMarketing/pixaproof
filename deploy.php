@@ -102,7 +102,12 @@ set('rclone_bin', '/home/deployer/bin/rclone');
 set('rclone_remote', 'b2');
 set('offsite_bucket', 'doom-innov8tif-backup');
 set('offsite_prefix', 'pixaproof');
-set('offsite_keep_days', 30);
+
+// Rolling GFS retention for the offsite DB snapshots: keep the last 7 daily
+// snapshots + the last 8 weekly snapshots (one per ISO week) = max 15
+// point-in-time copies. Pruned copies are hard-deleted so the total is capped.
+set('offsite_keep_daily', 7);
+set('offsite_keep_weekly', 8);
 
 // Server-only, non-git paths mirrored offsite (relative to {{deploy_path}}/shared).
 set('offsite_media_paths', [
@@ -128,6 +133,21 @@ function getStage(): string
     $labels = get('labels', []);
 
     return $labels['stage'] ?? 'unknown';
+}
+
+/**
+ * Keep only the newest $keep files in an rclone remote dir (filenames carry a
+ * sortable timestamp), hard-deleting the rest so no B2 hidden versions linger.
+ */
+function offsitePruneKeep(string $rclone, string $path, int $keep): void
+{
+    $out = run("{$rclone} lsf {$path} --files-only 2>/dev/null || echo ''");
+    $files = array_values(array_filter(explode("\n", trim($out))));
+    sort($files);
+    $excess = count($files) - $keep;
+    for ($i = 0; $i < $excess; $i++) {
+        run("{$rclone} deletefile --b2-hard-delete {$path}/{$files[$i]}");
+    }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -264,7 +284,8 @@ task('backup:offsite', function () {
     $remote = get('rclone_remote');
     $bucket = get('offsite_bucket');
     $prefix = get('offsite_prefix');
-    $keepDays = get('offsite_keep_days', 30);
+    $keepDaily = get('offsite_keep_daily', 7);
+    $keepWeekly = get('offsite_keep_weekly', 8);
     $mediaPaths = get('offsite_media_paths', []);
     $keepLocal = get('migrate_backup_keep', 5);
     $timestamp = date('Y-m-d-His');
@@ -303,9 +324,17 @@ task('backup:offsite', function () {
     $dbName = basename($dbFile);
     info("SQLite snapshot created: {$dbName}");
 
-    run("{$rclone} copy {$dbFile} {$base}/db/ --transfers 4");
-    run("{$rclone} check {$localDbDir} {$base}/db --include {$dbName} --one-way");
-    info("SQLite snapshot uploaded + verified → {$base}/db/{$dbName}");
+    run("{$rclone} copy {$dbFile} {$base}/db/daily/ --transfers 4");
+    run("{$rclone} check {$localDbDir} {$base}/db/daily --include {$dbName} --one-way");
+    info("Daily SQLite snapshot uploaded + verified → {$base}/db/daily/{$dbName}");
+
+    // Promote to a WEEKLY snapshot once per ISO week (first run of the week).
+    $isoWeek = date('o-\WW'); // e.g. 2026-W28
+    $weeklyHas = (int) trim(run("{$rclone} lsf {$base}/db/weekly/ 2>/dev/null | grep -c '_{$isoWeek}_' || true"));
+    if ($weeklyHas === 0) {
+        run("{$rclone} copyto {$dbFile} {$base}/db/weekly/database_{$stage}_{$isoWeek}_{$timestamp}.sqlite.gz");
+        info("Weekly SQLite snapshot created for {$isoWeek}");
+    }
 
     // 2. Media dirs — incremental mirror.
     foreach ($mediaPaths as $rel) {
@@ -328,10 +357,10 @@ task('backup:offsite', function () {
     run("{$rclone} copyto {$shared}/.env {$base}/config/env_{$stage}.env");
     info('.env uploaded');
 
-    // 4. Retention — DB snapshots are created fresh each run (mtime = now), so
-    // age-based prune is correct for them.
-    run("{$rclone} delete {$base}/db --min-age {$keepDays}d");
-    info("Offsite retention applied (>{$keepDays}d pruned)");
+    // 4. Retention — rolling GFS: keep the last N daily + M weekly snapshots.
+    offsitePruneKeep($rclone, "{$base}/db/daily", $keepDaily);
+    offsitePruneKeep($rclone, "{$base}/db/weekly", $keepWeekly);
+    info("Offsite retention applied (keep {$keepDaily} daily + {$keepWeekly} weekly)");
 
     $backups = run("ls -1t {$localDbDir}/database_{$stage}_*.sqlite.gz 2>/dev/null || echo ''");
     $files = array_filter(explode("\n", trim($backups)));
@@ -349,8 +378,10 @@ task('backup:offsite:list', function () {
     $rclone = get('rclone_bin');
     $base = get('rclone_remote').':'.get('offsite_bucket').'/'.get('offsite_prefix');
 
-    writeln('── DB snapshots ──');
-    writeln(run("{$rclone} lsl {$base}/db 2>/dev/null || echo '(none)'"));
+    writeln('── DB snapshots: daily ──');
+    writeln(run("{$rclone} lsl {$base}/db/daily 2>/dev/null || echo '(none)'"));
+    writeln('── DB snapshots: weekly ──');
+    writeln(run("{$rclone} lsl {$base}/db/weekly 2>/dev/null || echo '(none)'"));
     writeln('── Media mirror (top level) ──');
     writeln(run("{$rclone} lsd {$base}/files 2>/dev/null || echo '(none)'"));
     writeln('── Config (.env) ──');
