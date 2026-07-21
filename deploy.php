@@ -21,7 +21,21 @@ require 'recipe/laravel.php';
 // ═══════════════════════════════════════════════════════════════════════════
 
 set('application', 'Pixaproof');
-set('repository', 'git@github.com:cothinking-dev/pixaproof.git');
+
+// Single source of truth for the repo: derive it from THIS checkout's `origin`
+// remote so deploy.php can never drift from where you actually push (that drift
+// is what silently split cothinking-dev vs Innov8tifMarketing). `origin` may be
+// an https URL locally; normalise to the SSH form the server's deploy key uses.
+set('repository', function () {
+    $origin = trim(runLocally('git config --get remote.origin.url'));
+
+    if (preg_match('#github\.com[:/](.+?)(?:\.git)?$#', $origin, $matches)) {
+        return "git@github.com:{$matches[1]}.git";
+    }
+
+    return $origin;
+});
+
 set('keep_releases', 5);
 set('php_version', '8.4');
 
