@@ -670,19 +670,26 @@ task('lfs:pull', function () {
     }
 
     // GitHub LFS bandwidth/budget can be exhausted. The video assets under
-    // public/videos rarely change, so fall back to reusing the objects the
-    // previous release already materialised instead of blocking the deploy.
-    if (! has('previous_release')) {
-        throw new \RuntimeException('git lfs pull failed and there is no previous release to reuse LFS objects from');
+    // public/videos rarely change, so on pull failure reuse the objects the
+    // live release already has. Source from the `current` symlink, NOT
+    // previous_release: the symlink is only switched on a successful deploy, so
+    // it never points at a half-built release whose LFS objects are still
+    // unresolved pointer files (previous_release can).
+    $source = '{{deploy_path}}/current/public/videos';
+    if (! test("[ -d {$source} ]")) {
+        throw new \RuntimeException("git lfs pull failed and there is no live release to reuse video assets from ({$source})");
     }
 
-    $prev = get('previous_release');
-    if (! test("[ -d {$prev}/public/videos ]")) {
-        throw new \RuntimeException("git lfs pull failed and previous release has no public/videos to reuse ({$prev})");
+    run("cp -a {$source}/. {{release_path}}/public/videos/");
+
+    // Never leave unresolved LFS pointer files in place — if the source lacked
+    // real objects the copy is invalid, so fail the deploy loudly.
+    $pointers = run("grep -rIl 'git-lfs.github.com' {{release_path}}/public/videos 2>/dev/null || true");
+    if (trim($pointers) !== '') {
+        throw new \RuntimeException('LFS fallback left unresolved pointer files: '.trim($pointers));
     }
 
-    run("cp -a {$prev}/public/videos/. {{release_path}}/public/videos/");
-    info('git lfs pull failed — reused video assets from previous release ('.basename($prev).')');
+    info('git lfs pull failed — reused video assets from the live release');
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
