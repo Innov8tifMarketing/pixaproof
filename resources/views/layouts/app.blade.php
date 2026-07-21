@@ -14,4 +14,6 @@
 
         <x-footer />
     </div>
+
+    <x-cookie-consent />
 @endsection

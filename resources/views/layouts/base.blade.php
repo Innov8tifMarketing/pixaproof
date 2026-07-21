@@ -3,6 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        @include('partials.google-tag-manager-head')
+
         @hasSection('title')
             <title>@yield('title') - {{ config('app.name') }}</title>
         @else
@@ -69,6 +72,8 @@
     </head>
 
     <body>
+        @include('partials.google-tag-manager-body')
+
         @yield('body')
     </body>
 </html>
