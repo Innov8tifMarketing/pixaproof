@@ -658,7 +658,31 @@ task('storage:link-custom', function () {
 desc('Pull git-lfs objects from remote after code checkout');
 task('lfs:pull', function () {
     $repo = get('repository');
-    run("cd {{release_path}} && git remote set-url origin {$repo} && git lfs pull");
+    run("cd {{release_path}} && git remote set-url origin {$repo}");
+
+    try {
+        run('cd {{release_path}} && git lfs pull', timeout: 600);
+        info('LFS objects pulled from remote');
+
+        return;
+    } catch (\Throwable $e) {
+        warning('git lfs pull failed: '.trim($e->getMessage()));
+    }
+
+    // GitHub LFS bandwidth/budget can be exhausted. The video assets under
+    // public/videos rarely change, so fall back to reusing the objects the
+    // previous release already materialised instead of blocking the deploy.
+    if (! has('previous_release')) {
+        throw new \RuntimeException('git lfs pull failed and there is no previous release to reuse LFS objects from');
+    }
+
+    $prev = get('previous_release');
+    if (! test("[ -d {$prev}/public/videos ]")) {
+        throw new \RuntimeException("git lfs pull failed and previous release has no public/videos to reuse ({$prev})");
+    }
+
+    run("cp -a {$prev}/public/videos/. {{release_path}}/public/videos/");
+    info('git lfs pull failed — reused video assets from previous release ('.basename($prev).')');
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
