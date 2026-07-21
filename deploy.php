@@ -24,17 +24,14 @@ set('application', 'Pixaproof');
 
 // Single source of truth for the repo: derive it from THIS checkout's `origin`
 // remote so deploy.php can never drift from where you actually push (that drift
-// is what silently split cothinking-dev vs Innov8tifMarketing). `origin` may be
-// an https URL locally; normalise to the SSH form the server's deploy key uses.
-set('repository', function () {
-    $origin = trim(runLocally('git config --get remote.origin.url'));
-
-    if (preg_match('#github\.com[:/](.+?)(?:\.git)?$#', $origin, $matches)) {
-        return "git@github.com:{$matches[1]}.git";
-    }
-
-    return $origin;
-});
+// is what silently split cothinking-dev vs Innov8tifMarketing). Resolved once at
+// load time with plain git — NOT runLocally(), which needs a host context that
+// isn't available while deploy.php is being parsed. `origin` may be an https URL
+// locally; normalise to the SSH form the server's deploy key authenticates with.
+$origin = trim((string) shell_exec('git -C '.escapeshellarg(__DIR__).' config --get remote.origin.url 2>/dev/null'));
+set('repository', preg_match('#github\.com[:/](.+?)(?:\.git)?$#', $origin, $matches)
+    ? "git@github.com:{$matches[1]}.git"
+    : $origin);
 
 set('keep_releases', 5);
 set('php_version', '8.4');
