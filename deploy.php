@@ -165,6 +165,64 @@ function offsitePruneKeep(string $rclone, string $path, int $keep): void
 // TASKS
 // ═══════════════════════════════════════════════════════════════════════════
 
+desc('Compare deploy/server/** against the live server and report drift');
+task('server:diff', function () {
+    $root = __DIR__.'/deploy/server';
+
+    if (! is_dir($root)) {
+        warning('No deploy/server directory; nothing to compare.');
+
+        return;
+    }
+
+    $files = [];
+    $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS));
+
+    foreach ($iterator as $file) {
+        /** @var \SplFileInfo $file */
+        if ($file->isFile() && $file->getFilename() !== 'README.md') {
+            $files[] = $file->getPathname();
+        }
+    }
+
+    sort($files);
+    $drifted = 0;
+    $missing = 0;
+
+    foreach ($files as $localPath) {
+        $remotePath = substr($localPath, strlen($root));
+        $remote = run("cat {$remotePath} 2>/dev/null || true");
+        $local = (string) file_get_contents($localPath);
+
+        if (trim($remote) === '') {
+            writeln("  <fg=yellow>MISSING</> {$remotePath} (not present on server)");
+            $missing++;
+
+            continue;
+        }
+
+        if (rtrim($remote) !== rtrim($local)) {
+            writeln("  <fg=red>DRIFT</>   {$remotePath}");
+            $drifted++;
+
+            continue;
+        }
+
+        writeln("  <fg=green>ok</>      {$remotePath}");
+    }
+
+    writeln('');
+
+    if ($drifted === 0 && $missing === 0) {
+        info(count($files).' file(s) checked, server matches the repo.');
+
+        return;
+    }
+
+    warning("{$drifted} drifted, {$missing} missing, of ".count($files).' checked.');
+    writeln('  See deploy/server/README.md for how to apply changes safely.');
+});
+
 desc('Ensure SQLite database file exists');
 task('db:ensure-sqlite', function () {
     $sqlitePath = get('sqlite_path');

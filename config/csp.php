@@ -16,10 +16,6 @@ return [
     // Master kill switch. When false the endpoint returns 204 and logs nothing.
     'reporting_enabled' => env('CSP_REPORTING_ENABLED', true),
 
-    // Fraction of reports to keep, 0.0–1.0. Sampling happens before parsing, so
-    // lowering this is the cheapest way to survive a report flood.
-    'sample_rate' => (float) env('CSP_REPORT_SAMPLE_RATE', 1.0),
-
     // Identical violations (same policy + directive + blocked origin + path) are
     // logged at most once per this many minutes.
     'dedupe_minutes' => (int) env('CSP_REPORT_DEDUPE_MINUTES', 10),

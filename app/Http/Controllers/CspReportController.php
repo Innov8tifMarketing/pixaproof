@@ -33,12 +33,6 @@ class CspReportController extends Controller
             return response()->noContent();
         }
 
-        // Sample before parsing — this is the cheap lever during a report flood.
-        $sampleRate = (float) config('csp.sample_rate', 1.0);
-        if ($sampleRate < 1.0 && (mt_rand() / mt_getrandmax()) > $sampleRate) {
-            return response()->noContent();
-        }
-
         /*
          * Read the RAW body. `$request->json()` / `->all()` return EMPTY here:
          * Request::isJson() matches only content types containing `/json` or
