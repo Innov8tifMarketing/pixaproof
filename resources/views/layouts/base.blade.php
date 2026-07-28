@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         @include('partials.google-tag-manager-head')
+        @include('partials.google-analytics')
 
         @hasSection('title')
             <title>@yield('title') - {{ config('app.name') }}</title>
