@@ -1,5 +1,6 @@
 <?php
 
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -71,6 +72,21 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => env('LOG_DAILY_DAYS', 14),
             'replace_placeholders' => true,
+        ],
+
+        /*
+         * Content-Security-Policy violation reports (see config/csp.php).
+         * Kept off the default stack so a report flood cannot drown application
+         * logs. JSON-formatted, one object per line, for easy aggregation.
+         * storage/logs is a Deployer shared dir, so this survives releases.
+         */
+        'csp' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/csp.log'),
+            'level' => 'debug',
+            'days' => env('LOG_CSP_DAYS', 14),
+            'formatter' => JsonFormatter::class,
+            'replace_placeholders' => false,
         ],
 
         'slack' => [

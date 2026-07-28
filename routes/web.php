@@ -1,6 +1,34 @@
 <?php
 
+use App\Http\Controllers\CspReportController;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+/*
+ * CSP violation collector. Browsers post here with no CSRF token and no
+ * cookies, so session and CSRF middleware are stripped: CSRF would reject every
+ * report, and StartSession would mint a throwaway cookie per report.
+ * ShareErrorsFromSession must go with StartSession or it throws.
+ *
+ * NOTE: this site is behind Cloudflare and trustProxies is not configured, so
+ * the throttle key is the Cloudflare edge IP, not the visitor. That makes this
+ * closer to a global cap than a per-client one — sized generously to suit.
+ */
+Route::post('/csp-report', CspReportController::class)
+    ->withoutMiddleware([
+        // Laravel 12 name. (Laravel 13 renamed this to PreventRequestForgery —
+        // the innov8tif app on the same server uses that name.) Getting this
+        // wrong fails loudly but confusingly: CSRF stays active, reaches for the
+        // session that StartSession below has just removed, and every report
+        // 500s with "Session store not set on request".
+        ValidateCsrfToken::class,
+        StartSession::class,
+        ShareErrorsFromSession::class,
+    ])
+    ->middleware('throttle:300,1')
+    ->name('csp.report');
 
 // Main pages
 Route::view('/', 'pages.home')->name('home');
