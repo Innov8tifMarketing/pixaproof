@@ -39,8 +39,4 @@ return [
         'id' => env('GOOGLE_TAG_MANAGER_ID'),
     ],
 
-    'google_analytics' => [
-        'id' => env('GOOGLE_ANALYTICS_ID'),
-    ],
-
 ];
