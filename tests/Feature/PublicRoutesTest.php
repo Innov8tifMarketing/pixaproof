@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
@@ -26,7 +27,7 @@ class PublicRoutesTest extends TestCase
         ];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('pageProvider')]
+    #[DataProvider('pageProvider')]
     public function test_page_renders(string $path, string $expected): void
     {
         $this->get($path)
@@ -50,7 +51,7 @@ class PublicRoutesTest extends TestCase
         ];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('redirectProvider')]
+    #[DataProvider('redirectProvider')]
     public function test_legacy_paths_redirect(string $from, string $to): void
     {
         $this->get($from)->assertRedirect($to);

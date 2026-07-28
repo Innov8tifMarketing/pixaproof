@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class SecurityHeadersTest extends TestCase
@@ -36,7 +37,7 @@ class SecurityHeadersTest extends TestCase
         ];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('pageProvider')]
+    #[DataProvider('pageProvider')]
     public function test_every_page_carries_security_headers(string $path): void
     {
         $response = $this->get($path);
