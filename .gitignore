@@ -23,3 +23,8 @@ Thumbs.db
 
 # nix devshell (direnv) cache
 /.direnv
+
+# Ephemeral scratch. Disposable by definition — nothing committed may cite a
+# tmp/ path, and nothing in here survives a clean checkout.
+tmp/
+.scratch/
