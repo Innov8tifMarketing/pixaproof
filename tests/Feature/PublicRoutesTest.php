@@ -36,6 +36,22 @@ class PublicRoutesTest extends TestCase
     }
 
     /**
+     * The cookie notice was cosmetic — both buttons dismissed it and GTM loaded
+     * regardless — so it was removed. It only ever rendered when a GTM container
+     * was configured, which is why that config is set here.
+     */
+    public function test_no_cookie_notice_is_rendered(): void
+    {
+        config(['services.google_tag_manager.id' => 'GTM-TEST123']);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('GTM-TEST123', false)
+            ->assertDontSee('pixaproof_cookie_notice', false)
+            ->assertDontSee('Cookie notice', false);
+    }
+
+    /**
      * A representative sample of the ~20-entry redirect table. They are all
      * Route::redirect, so if one resolves they all do.
      *
