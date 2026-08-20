@@ -4,7 +4,8 @@
   # Per-project nixpkgs pin. `nix flake update` bumps THIS project only.
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-  outputs = { self, nixpkgs }:
+  outputs =
+    { self, nixpkgs }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -15,12 +16,15 @@
       #    (mbstring, openssl, tokenizer, curl, xml, pdo_sqlite, …). Uncomment
       #    to add project extras; composer below is built against this php.
       php = pkgs.php85.buildEnv {
-        extensions = { enabled, all }: enabled ++ (with all; [
-          # gd          # image processing
-          # intl        # i18n, number/date formatting
-          # imagick     # ImageMagick bindings
-          # xdebug      # step debugging / coverage (dev only)
-        ]);
+        extensions =
+          { enabled, all }:
+          enabled
+          ++ (with all; [
+            # gd          # image processing
+            # intl        # i18n, number/date formatting
+            # imagick     # ImageMagick bindings
+            # xdebug      # step debugging / coverage (dev only)
+          ]);
         extraConfig = ''
           memory_limit = 512M
           upload_max_filesize = 64M
@@ -28,16 +32,20 @@
         '';
       };
       # ─────────────────────────────────────────────────────────────────────
-    in {
+    in
+    {
       devShells.${system}.default = pkgs.mkShell {
         packages = [
           php
-          php.packages.composer   # Composer built against THIS php — no version skew
-          pkgs.nodejs             # Vite / frontend build
+          php.packages.composer # Composer built against THIS php — no version skew
+          pkgs.nodejs # Vite / frontend build
         ];
 
         shellHook = ''
-          echo "→ $(php --version | head -n1)"
+          projectRoot=$(${pkgs.git}/bin/git rev-parse --show-toplevel 2>/dev/null || printf '%s' "$PWD")
+          export PATH="$projectRoot/vendor/bin:$PATH"
+
+          echo "Laravel dev shell: php $(php -r 'echo PHP_VERSION;'), node $(node -v)" >&2
         '';
       };
     };

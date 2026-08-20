@@ -4,7 +4,7 @@
         <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <!-- Brand Column -->
             <div class="sm:col-span-2 lg:col-span-1">
-                <img src="{{ asset('images/pixaproof-wordmark.svg') }}" alt="PixaProof" class="h-8 w-auto shrink-0">
+                <img src="{{ asset('images/pixaproof-wordmark.svg') }}" alt="PixaProof" width="1347" height="232" class="h-8 w-auto shrink-0">
                 <p class="mt-4 text-sm text-neutral-600">
                     Enterprise-grade image authenticity verification. Detect tampering, validate metadata, and establish chain of custody.
                 </p>

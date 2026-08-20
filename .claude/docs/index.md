@@ -6,7 +6,7 @@
 
 | Topic | Document | Description |
 |-------|----------|-------------|
-| Tech Stack | [tech-stack.md](./tech-stack.md) | Laravel 12, Livewire 3, Tailwind 4, devices.css |
+| Tech Stack | [tech-stack.md](./tech-stack.md) | Laravel 13, Livewire 3, Tailwind 4, devices.css |
 | Architecture | [architecture.md](./architecture.md) | Directory structure, patterns, routes, schema |
 | **Stylesheet** | [stylesheet-guidelines.md](./stylesheet-guidelines.md) | Colors (primary/neutral/accent), typography, components |
 | Company | [pixaproof-company.md](./pixaproof-company.md) | Innov8tif, brand, certifications |

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CspReportController;
-use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -18,12 +18,12 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
  */
 Route::post('/csp-report', CspReportController::class)
     ->withoutMiddleware([
-        // Laravel 12 name. (Laravel 13 renamed this to PreventRequestForgery —
-        // the innov8tif app on the same server uses that name.) Getting this
-        // wrong fails loudly but confusingly: CSRF stays active, reaches for the
-        // session that StartSession below has just removed, and every report
-        // 500s with "Session store not set on request".
-        ValidateCsrfToken::class,
+        // Laravel 13 name; ValidateCsrfToken/VerifyCsrfToken are deprecated
+        // aliases. Getting this wrong fails loudly but confusingly: CSRF stays
+        // active, reaches for the session that StartSession below has just
+        // removed, and every report 500s with "Session store not set on
+        // request".
+        PreventRequestForgery::class,
         StartSession::class,
         ShareErrorsFromSession::class,
     ])

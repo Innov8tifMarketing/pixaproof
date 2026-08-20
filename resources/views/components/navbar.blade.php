@@ -17,7 +17,7 @@
         <div class="flex h-16 items-center justify-between">
             <!-- Logo -->
             <a href="{{ route('home') }}" class="flex items-center">
-                <img src="{{ asset('images/pixaproof-wordmark.svg') }}" alt="PixaProof" class="h-8 w-auto shrink-0">
+                <img src="{{ asset('images/pixaproof-wordmark.svg') }}" alt="PixaProof" width="1347" height="232" class="h-8 w-auto shrink-0">
             </a>
 
             <!-- Desktop Navigation -->

@@ -3,8 +3,8 @@
 ## Core Framework
 | Component | Version | Notes |
 |-----------|---------|-------|
-| Laravel | 12.x | PHP framework |
-| PHP | 8.4.17 | Runtime version |
+| Laravel | 13.x | PHP framework |
+| PHP | 8.4+ | Runtime version |
 | Livewire | 3.x | Reactive components |
 | Alpine.js | 3.x | Lightweight JS framework (bundled with Livewire) |
 
@@ -29,7 +29,7 @@
 | Laravel Pint | Code formatting |
 | Laravel Pail | Log viewer |
 | Laravel Sail | Docker development |
-| PHPUnit | Testing (v11) |
+| PHPUnit | Testing (v12) |
 
 ## Deployment
 | Platform | Config |
@@ -39,9 +39,9 @@
 ## Key Dependencies
 ```json
 {
-  "laravel/framework": "^12.0",
+  "laravel/framework": "^13.0",
+  "laravel/tinker": "^3.0",
   "livewire/livewire": "^3.7",
-  "laravel-frontend-presets/tall": "^9.1",
   "blade-ui-kit/blade-heroicons": "^2.6"
 }
 ```
@@ -56,4 +56,4 @@ npm run build     # Production build
 ```
 
 ---
-*Updated: 2026-02-09 - Updated PHP version to 8.4.17, added devices.css, removed Turso*
+*Updated: 2026-08-20 - Upgraded to Laravel 13 / PHPUnit 12 / Tinker 3; dropped the laravel-frontend-presets/tall scaffolding preset (no Laravel 13 release, unused at runtime)*
