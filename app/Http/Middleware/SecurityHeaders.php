@@ -55,7 +55,7 @@ class SecurityHeaders
         ];
 
         if ($request->secure() && app()->isProduction()) {
-            $headers['Strict-Transport-Security'] = 'max-age=600';
+            $headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
         }
 
         foreach ($headers as $name => $value) {
