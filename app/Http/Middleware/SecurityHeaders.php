@@ -6,31 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Applies baseline HTTP security headers to every response.
- *
- * Ported from the innov8tif marketing site, which shares this server. The
- * policy here is far smaller because the site is far smaller: three static
- * pages plus a redirect table, no forms, no uploads, no authentication. The
- * only external origin in the served HTML is Google Tag Manager. Cloudflare's
- * own injections (email obfuscation, the challenge platform) are served from
- * /cdn-cgi/ on this origin and so are already covered by 'self'.
- *
- * Two Content-Security-Policies are sent:
- *   1. An ENFORCED policy limited to directives that need no nonce and cannot
- *      break inline scripts/styles.
- *   2. A REPORT-ONLY policy carrying the full target. Because this site's
- *      surface is small and fully enumerated, this one can realistically be
- *      promoted to enforced — unlike the marketing site, which is gated on GTM.
- *
- * `frame-ancestors 'self'` is safe here: this is the marketing site for
- * Pixaproof, not the proofing product itself, so nothing embeds it.
- *
- * Violations are posted to `route('csp.report')` and land on the `csp` log
- * channel. HSTS deliberately starts at ten minutes and carries no
- * includeSubDomains — step both up only once HTTPS is confirmed everywhere,
- * including on any *.pixaproof.com host serving the product.
- */
 class SecurityHeaders
 {
     private const ENFORCED_CSP = [
@@ -40,10 +15,6 @@ class SecurityHeaders
     ];
 
     /**
-     * `'unsafe-inline'`/`'unsafe-eval'` remain because Livewire and Alpine rely
-     * on them — Alpine evaluates its `x-` expression strings at runtime, which
-     * structurally requires `'unsafe-eval'`.
-     *
      * @var list<string>
      */
     private const REPORT_ONLY_CSP = [
@@ -60,10 +31,6 @@ class SecurityHeaders
         "frame-ancestors 'self'",
     ];
 
-    /**
-     * Must match the `report-to` group name character-for-character, or Chrome
-     * discards every report without surfacing an error.
-     */
     private const REPORT_GROUP = 'csp-endpoint';
 
     public function handle(Request $request, Closure $next): Response

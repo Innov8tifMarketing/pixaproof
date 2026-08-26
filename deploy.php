@@ -4,30 +4,9 @@ namespace Deployer;
 
 require 'recipe/laravel.php';
 
-// ═══════════════════════════════════════════════════════════════════════════
-// TEMPLATE VARIABLES - Replace these for your project
-// ═══════════════════════════════════════════════════════════════════════════
-//
-// Search and replace the following placeholders:
-//   {{APP_NAME}}        -> Your application name (e.g., 'My Laravel App')
-//   {{REPOSITORY}}      -> Your Git repository URL (e.g., 'git@github.com:user/repo.git')
-//   {{SERVER_IP}}       -> Your server IP or hostname (e.g., '192.168.1.100')
-//   {{DEPLOY_PATH}}     -> Production deploy path (e.g., '/home/deployer/myapp')
-//   {{STAGING_PATH}}    -> Staging deploy path (e.g., '/home/deployer/myapp-staging')
-//   {{PROD_URL}}        -> Production URL (e.g., 'https://myapp.com')
-//   {{STAGING_URL}}     -> Staging URL (e.g., 'https://staging.myapp.com')
-//   {{WORKER_PREFIX}}   -> Queue worker prefix (e.g., 'myapp')
-//
-// ═══════════════════════════════════════════════════════════════════════════
 
 set('application', 'Pixaproof');
 
-// Single source of truth for the repo: derive it from THIS checkout's `origin`
-// remote so deploy.php can never drift from where you actually push (that drift
-// is what silently split cothinking-dev vs Innov8tifMarketing). Resolved once at
-// load time with plain git — NOT runLocally(), which needs a host context that
-// isn't available while deploy.php is being parsed. `origin` may be an https URL
-// locally; normalise to the SSH form the server's deploy key authenticates with.
 $origin = trim((string) shell_exec('git -C '.escapeshellarg(__DIR__).' config --get remote.origin.url 2>/dev/null'));
 set('repository', preg_match('#github\.com[:/](.+?)(?:\.git)?$#', $origin, $matches)
     ? "git@github.com:{$matches[1]}.git"
@@ -36,22 +15,16 @@ set('repository', preg_match('#github\.com[:/](.+?)(?:\.git)?$#', $origin, $matc
 set('keep_releases', 5);
 set('php_version', '8.4');
 
-// Default timeout for commands (5 minutes)
 set('default_timeout', 300);
 
-// Use ACL for writable directories - works with shared dirs owned by different users
 set('writable_mode', 'acl');
 set('writable_use_sudo', false);
 
 set('forward_agent', false);
 
-// Use clone strategy for git-lfs; skip smudge during clone (LFS pulled separately)
 set('update_code_strategy', 'clone');
 set('env', ['GIT_LFS_SKIP_SMUDGE' => '1']);
 
-// ═══════════════════════════════════════════════════════════════════════════
-// HOSTS
-// ═══════════════════════════════════════════════════════════════════════════
 
 host('prod')
     ->setHostname('47.237.191.213')
@@ -61,12 +34,7 @@ host('prod')
     ->set('labels', ['stage' => 'prod'])
     ->set('url', 'https://pixaproof.com');
 
-// ═══════════════════════════════════════════════════════════════════════════
-// SHARED RESOURCES
-// ═══════════════════════════════════════════════════════════════════════════
 
-// Laravel recipe sets: storage, .env
-// Project-specific shared directories with organized structure
 add('shared_dirs', [
     'data/sqlite',
     'data/media',
@@ -79,65 +47,40 @@ add('writable_dirs', [
     'data/media',
 ]);
 
-// Custom storage links (public/ -> shared/)
 set('storage_links', [
     'storage' => 'storage/app/public',
     'media' => 'data/media',
 ]);
 
-// Queue worker name for Supervisor
 set('queue_worker_name', fn () => 'pixaproof-'.getStage().'-worker');
 
-// ═══════════════════════════════════════════════════════════════════════════
-// DATABASE PATHS
-// ═══════════════════════════════════════════════════════════════════════════
 
 set('sqlite_path', '{{deploy_path}}/shared/data/sqlite/database.sqlite');
 set('migrate_backup_path', '{{deploy_path}}/shared/data/backups');
 
-// ═══════════════════════════════════════════════════════════════════════════
-// MIGRATION & BACKUP SETTINGS
-// ═══════════════════════════════════════════════════════════════════════════
 
 set('migrate_backup_keep', 5);
 
-// ═══════════════════════════════════════════════════════════════════════════
-// OFFSITE BACKUP SETTINGS (Backblaze B2 via rclone)
-// ═══════════════════════════════════════════════════════════════════════════
 
-// rclone is installed as a no-sudo static binary (shared with the innov8tif
-// deploy on this box); the `b2` remote lives in deployer's
-// ~/.config/rclone/rclone.conf (chmod 600). Backups land under a pixaproof/
-// prefix in the shared bucket.
 set('rclone_bin', '/home/deployer/bin/rclone');
 set('rclone_remote', 'b2');
 set('offsite_bucket', 'doom-innov8tif-backup');
 set('offsite_prefix', 'pixaproof');
 
-// Rolling GFS retention for the offsite DB snapshots: keep the last 7 daily
-// snapshots + the last 8 weekly snapshots (one per ISO week) = max 15
-// point-in-time copies. Pruned copies are hard-deleted so the total is capped.
 set('offsite_keep_daily', 7);
 set('offsite_keep_weekly', 8);
 
-// Server-only, non-git paths mirrored offsite (relative to {{deploy_path}}/shared).
 set('offsite_media_paths', [
-    'data/media',           // runtime uploads served at /media
-    'storage/app/public',   // public disk (served at /storage)
-    'storage/app/private',  // private disk
+    'data/media',
+    'storage/app/public',
+    'storage/app/private',
 ]);
 
-// ═══════════════════════════════════════════════════════════════════════════
-// HEALTH CHECK SETTINGS
-// ═══════════════════════════════════════════════════════════════════════════
 
 set('verify_timeout', 15);
 set('verify_retries', 5);
 set('verify_retry_delay', 2);
 
-// ═══════════════════════════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════════════════════════
 
 function getStage(): string
 {
@@ -146,10 +89,6 @@ function getStage(): string
     return $labels['stage'] ?? 'unknown';
 }
 
-/**
- * Keep only the newest $keep files in an rclone remote dir (filenames carry a
- * sortable timestamp), hard-deleting the rest so no B2 hidden versions linger.
- */
 function offsitePruneKeep(string $rclone, string $path, int $keep): void
 {
     $out = run("{$rclone} lsf {$path} --files-only 2>/dev/null || echo ''");
@@ -161,9 +100,6 @@ function offsitePruneKeep(string $rclone, string $path, int $keep): void
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// TASKS
-// ═══════════════════════════════════════════════════════════════════════════
 
 desc('Compare deploy/server/** against the live server and report drift');
 task('server:diff', function () {
@@ -249,7 +185,6 @@ task('db:backup', function () {
     $timestamp = date('Y-m-d-His');
     $stage = getStage();
 
-    // Skip if database doesn't exist or is empty
     if (! test("[ -f {$sqlitePath} ]")) {
         info('No database to backup');
 
@@ -263,7 +198,6 @@ task('db:backup', function () {
         return;
     }
 
-    // Create backup
     run("mkdir -p {$backupPath}");
     $backupFile = "{$backupPath}/database_{$stage}_{$timestamp}.sqlite";
 
@@ -271,7 +205,6 @@ task('db:backup', function () {
     $sizeKb = round((int) $fileSize / 1024, 2);
     info("Backup created: {$backupFile} ({$sizeKb} KB)");
 
-    // Clean up old backups
     $backups = run("ls -1t {$backupPath}/database_{$stage}_*.sqlite 2>/dev/null || echo ''");
     $backupFiles = array_filter(explode("\n", trim($backups)));
 
@@ -327,7 +260,6 @@ task('db:restore', function () {
         return;
     }
 
-    // Put app in maintenance mode
     if (test('[ -f {{deploy_path}}/current/artisan ]')) {
         run('cd {{deploy_path}}/current && {{bin/php}} artisan down --retry=60');
     }
@@ -336,15 +268,11 @@ task('db:restore', function () {
     run("cp {$selectedBackup} {$sqlitePath}");
     info('Database restored');
 
-    // Bring app back up
     if (test('[ -f {{deploy_path}}/current/artisan ]')) {
         run('cd {{deploy_path}}/current && {{bin/php}} artisan up');
     }
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// TASKS: OFFSITE BACKUP (Backblaze B2)
-// ═══════════════════════════════════════════════════════════════════════════
 
 desc('Back up SQLite DB + media + .env offsite to Backblaze B2');
 task('backup:offsite', function () {
@@ -363,14 +291,11 @@ task('backup:offsite', function () {
     $shared = '{{deploy_path}}/shared';
     $base = "{$remote}:{$bucket}/{$prefix}";
 
-    // Preflight: rclone present + remote/bucket reachable.
     if (! test("[ -x {$rclone} ]")) {
         throw new \RuntimeException("rclone not found at {$rclone} — run the offsite tooling install first");
     }
     run("{$rclone} lsd {$remote}:{$bucket} > /dev/null");
 
-    // 1. SQLite — consistent online snapshot via .backup (handles WAL), then
-    //    integrity-checked, gzipped, atomic. `cp` would miss in-flight writes.
     if (! test("[ -f {$sqlitePath} ]")) {
         throw new \RuntimeException("SQLite db not found at {$sqlitePath}");
     }
@@ -397,15 +322,13 @@ task('backup:offsite', function () {
     run("{$rclone} check {$localDbDir} {$base}/db/daily --include {$dbName} --one-way");
     info("Daily SQLite snapshot uploaded + verified → {$base}/db/daily/{$dbName}");
 
-    // Promote to a WEEKLY snapshot once per ISO week (first run of the week).
-    $isoWeek = date('o-\WW'); // e.g. 2026-W28
+    $isoWeek = date('o-\WW');
     $weeklyHas = (int) trim(run("{$rclone} lsf {$base}/db/weekly/ 2>/dev/null | grep -c '_{$isoWeek}_' || true"));
     if ($weeklyHas === 0) {
         run("{$rclone} copyto {$dbFile} {$base}/db/weekly/database_{$stage}_{$isoWeek}_{$timestamp}.sqlite.gz");
         info("Weekly SQLite snapshot created for {$isoWeek}");
     }
 
-    // 2. Media dirs — incremental mirror.
     foreach ($mediaPaths as $rel) {
         $src = "{$shared}/{$rel}";
         $dst = "{$base}/files/{$rel}";
@@ -418,15 +341,9 @@ task('backup:offsite', function () {
         info("Mirrored: {$rel}");
     }
 
-    // 3. Secrets — .env to the private bucket (B2 encrypts server-side at rest).
-    // Fixed name, overwritten each run; prior versions are retained 30d by the
-    // bucket's B2 versioning lifecycle. Dated + age-pruned would NOT work here:
-    // copyto preserves the source .env's mtime, which B2 reports back verbatim,
-    // so --min-age deletes a freshly-uploaded but long-unchanged .env at once.
     run("{$rclone} copyto {$shared}/.env {$base}/config/env_{$stage}.env");
     info('.env uploaded');
 
-    // 4. Retention — rolling GFS: keep the last N daily + M weekly snapshots.
     offsitePruneKeep($rclone, "{$base}/db/daily", $keepDaily);
     offsitePruneKeep($rclone, "{$base}/db/weekly", $keepWeekly);
     info("Offsite retention applied (keep {$keepDaily} daily + {$keepWeekly} weekly)");
@@ -459,7 +376,6 @@ task('backup:offsite:list', function () {
 
 desc('Run migrations safely with backup');
 task('migrate:safe', function () {
-    // Check for pending migrations
     $status = run('cd {{release_path}} && {{bin/php}} artisan migrate:status --pending 2>&1 || echo "NO_PENDING"');
 
     if (str_contains($status, 'NO_PENDING') || str_contains($status, 'Nothing to migrate') || str_contains($status, 'No pending migrations')) {
@@ -470,7 +386,6 @@ task('migrate:safe', function () {
 
     info('Pending migrations detected');
 
-    // Backup before migrating
     try {
         invoke('db:backup');
     } catch (\Throwable $e) {
@@ -480,7 +395,6 @@ task('migrate:safe', function () {
         }
     }
 
-    // Run migrations
     info('Running migrations...');
     $output = run('cd {{release_path}} && {{bin/php}} artisan migrate --force 2>&1', timeout: 300);
     writeln($output);
@@ -493,7 +407,6 @@ task('php-fpm:restart', function () {
 
     run("sudo systemctl restart php{$version}-fpm");
 
-    // Wait for FPM to be ready
     $maxAttempts = 10;
     for ($attempt = 0; $attempt < $maxAttempts; $attempt++) {
         $status = run("systemctl is-active php{$version}-fpm 2>/dev/null || echo 'inactive'");
@@ -516,7 +429,6 @@ task('queue:restart', function () {
         return;
     }
 
-    // Check if worker exists
     $status = run("sudo supervisorctl status {$workerName}:* 2>&1 || echo 'NOT_FOUND'");
 
     if (str_contains($status, 'NOT_FOUND') || str_contains($status, 'no such')) {
@@ -559,7 +471,7 @@ task('deploy:verify', function () {
     }
 
     info('Verifying deployment health...');
-    run('sleep 2'); // Wait for services to stabilize
+    run('sleep 2');
 
     $passed = false;
     $lastStatusCode = '000';
@@ -586,7 +498,6 @@ task('deploy:verify', function () {
     if (! $passed) {
         warning("Health check failed (HTTP {$lastStatusCode})");
 
-        // Show recent logs
         writeln('Recent Laravel logs:');
         run('tail -30 {{deploy_path}}/shared/storage/logs/laravel.log 2>/dev/null || echo "No logs"');
 
@@ -612,19 +523,15 @@ task('rollback', function () {
 
     info("Rolling back from {$currentRelease} to {$previousRelease}...");
 
-    // Maintenance mode
     if (test('[ -f {{deploy_path}}/current/artisan ]')) {
         run('cd {{deploy_path}}/current && {{bin/php}} artisan down --retry=60 2>/dev/null || true');
     }
 
-    // Update symlink
     run('cd {{deploy_path}} && {{bin/symlink}} releases/'.$previousRelease.' current');
 
-    // Restart services
     invoke('php-fpm:restart');
     invoke('queue:restart');
 
-    // Bring app up
     run('cd {{deploy_path}}/current && {{bin/php}} artisan up');
 
     info("Rolled back to: {$previousRelease}");
@@ -671,7 +578,6 @@ task('artisan:up', function () {
 desc('Clear and rebuild caches');
 task('artisan:cache:refresh', function () {
     within('{{release_path}}', function () {
-        // Cache clear may fail if Redis not installed - continue anyway
         run('{{bin/php}} artisan cache:clear 2>/dev/null || true');
         run('{{bin/php}} artisan config:clear');
         run('{{bin/php}} artisan route:clear');
@@ -701,15 +607,12 @@ task('storage:link-custom', function () {
         $linkPath = "{{release_path}}/public/{$link}";
         $targetPath = "{{deploy_path}}/shared/{$target}";
 
-        // Ensure target directory exists
         run("mkdir -p {$targetPath}");
 
-        // Skip if link already exists and points to correct target
         if (test("[ -L {$linkPath} ]")) {
             continue;
         }
 
-        // Remove if exists but not a symlink (e.g., directory from git)
         if (test("[ -e {$linkPath} ]")) {
             info("Removing existing {$link} directory to create symlink");
             run("rm -rf {$linkPath}");
@@ -720,9 +623,6 @@ task('storage:link-custom', function () {
     }
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// TASKS: GIT LFS
-// ═══════════════════════════════════════════════════════════════════════════
 
 desc('Pull git-lfs objects from remote after code checkout');
 task('lfs:pull', function () {
@@ -738,12 +638,6 @@ task('lfs:pull', function () {
         warning('git lfs pull failed: '.trim($e->getMessage()));
     }
 
-    // GitHub LFS bandwidth/budget can be exhausted. The video assets under
-    // public/videos rarely change, so on pull failure reuse the objects the
-    // live release already has. Source from the `current` symlink, NOT
-    // previous_release: the symlink is only switched on a successful deploy, so
-    // it never points at a half-built release whose LFS objects are still
-    // unresolved pointer files (previous_release can).
     $source = '{{deploy_path}}/current/public/videos';
     if (! test("[ -d {$source} ]")) {
         throw new \RuntimeException("git lfs pull failed and there is no live release to reuse video assets from ({$source})");
@@ -751,8 +645,6 @@ task('lfs:pull', function () {
 
     run("cp -a {$source}/. {{release_path}}/public/videos/");
 
-    // Never leave unresolved LFS pointer files in place — if the source lacked
-    // real objects the copy is invalid, so fail the deploy loudly.
     $pointers = run("grep -rIl 'git-lfs.github.com' {{release_path}}/public/videos 2>/dev/null || true");
     if (trim($pointers) !== '') {
         throw new \RuntimeException('LFS fallback left unresolved pointer files: '.trim($pointers));
@@ -761,47 +653,32 @@ task('lfs:pull', function () {
     info('git lfs pull failed — reused video assets from the live release');
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// DEPLOYMENT HOOKS
-// ═══════════════════════════════════════════════════════════════════════════
 
-// After code checkout, pull LFS objects from GitHub
 after('deploy:update_code', 'lfs:pull');
 
-// After vendors installed, rebuild config cache
 after('deploy:vendors', 'artisan:config:cache');
 
-// NPM install and build
 after('artisan:config:cache', 'npm:install');
 after('npm:install', 'npm:build');
 
-// Ensure SQLite exists
 after('npm:build', 'db:ensure-sqlite');
 
-// Backup and migrate
 after('db:ensure-sqlite', 'db:backup');
 after('db:backup', 'migrate:safe');
 
-// Before symlink switch - maintenance mode
 before('deploy:symlink', 'artisan:down');
 
-// After symlink - restart services
 after('deploy:symlink', 'php-fpm:restart');
 after('deploy:symlink', 'artisan:up');
 after('deploy:symlink', 'queue:restart');
 after('deploy:symlink', 'artisan:cache:refresh');
 
-// Custom storage links
 after('artisan:storage:link', 'storage:link-custom');
 
-// Disable default Laravel recipe migration (we use migrate:safe instead)
 task('artisan:migrate', function () {
-    // Disabled - migrations handled by migrate:safe task
 })->hidden();
 
-// Verify deployment
 after('deploy:symlink', 'deploy:verify');
 
-// On failure
 fail('deploy', 'deploy:rollback-on-failure');
 fail('deploy', 'deploy:unlock');

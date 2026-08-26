@@ -9,9 +9,6 @@ use Tests\TestCase;
 class FaviconCacheBustingTest extends TestCase
 {
     /**
-     * Every icon referenced from the layout head must carry a cache-busting
-     * query string, otherwise a changed icon stays stale behind Cloudflare.
-     *
      * @return array<int, array{0: string}>
      */
     public static function iconAssetProvider(): array

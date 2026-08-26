@@ -8,9 +8,6 @@ use Tests\TestCase;
 class SecurityHeadersTest extends TestCase
 {
     /**
-     * Every page this site serves. There are only three — the rest of
-     * routes/web.php is a redirect table.
-     *
      * @return list<array{string}>
      */
     public static function pageProvider(): array
@@ -57,7 +54,6 @@ class SecurityHeadersTest extends TestCase
         $this->assertStringContainsString("object-src 'none'", $policy);
         $this->assertStringContainsString("base-uri 'self'", $policy);
 
-        // Anything needing a nonce must stay report-only until proven clean.
         $this->assertStringNotContainsString('script-src', $policy);
     }
 
@@ -66,8 +62,6 @@ class SecurityHeadersTest extends TestCase
         $policy = (string) $this->get('/')->headers->get('Content-Security-Policy-Report-Only');
 
         $this->assertStringContainsString("default-src 'self'", $policy);
-        // GTM is the only third party in the served HTML. Cloudflare's own
-        // injections come from /cdn-cgi/ on this origin, so 'self' covers them.
         $this->assertStringContainsString('googletagmanager.com', $policy);
     }
 
@@ -81,8 +75,6 @@ class SecurityHeadersTest extends TestCase
             $this->assertStringContainsString('report-to csp-endpoint', $policy, $header);
         }
 
-        // The group name must match report-to exactly or Chrome silently drops
-        // every report.
         $this->assertStringContainsString(
             'csp-endpoint=',
             (string) $response->headers->get('Reporting-Endpoints'),

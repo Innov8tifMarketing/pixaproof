@@ -8,23 +8,14 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Content hashes for public assets, memoised per request.
-     *
      * @var array<string, string>
      */
     protected static array $assetHashes = [];
 
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         Blade::directive(
@@ -33,15 +24,6 @@ class AppServiceProvider extends ServiceProvider
         );
     }
 
-    /**
-     * Resolve a public asset URL carrying a content-derived query string.
-     *
-     * Favicons and manifests live in public/ rather than the Vite build, so they
-     * keep a stable URL across deploys and both Cloudflare and browsers happily
-     * serve a stale copy until TTL expiry. Appending a content hash makes each
-     * revision a distinct cache key, so a changed icon is picked up immediately
-     * while an unchanged one stays cached.
-     */
     public static function fingerprintedAsset(string $path): string
     {
         if (! array_key_exists($path, static::$assetHashes)) {

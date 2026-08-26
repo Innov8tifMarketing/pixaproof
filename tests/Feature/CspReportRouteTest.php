@@ -9,17 +9,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Tests\TestCase;
 
-/**
- * Guards the middleware exclusions on the CSP collector (see routes/web.php).
- *
- * `withoutMiddleware()` matches on class name and silently no-ops when the name
- * it is given is not actually in the stack, so a stale name — such as Laravel
- * 12's ValidateCsrfToken after the Laravel 13 rename to PreventRequestForgery —
- * leaves CSRF active. In production that 500s every report; under test it
- * cannot be caught by posting to the route, because the CSRF middleware
- * short-circuits whenever the application is running unit tests. So assert on
- * the gathered middleware stack instead.
- */
 class CspReportRouteTest extends TestCase
 {
     /**
@@ -43,11 +32,6 @@ class CspReportRouteTest extends TestCase
         }
     }
 
-    /**
-     * The exclusions above only prove something if these classes are what the
-     * `web` group actually applies. If the framework renames one again, this
-     * fails and points at the exclusion list that needs updating.
-     */
     public function test_the_web_group_still_applies_the_excluded_middleware(): void
     {
         $gathered = $this->gatheredMiddleware('home');
