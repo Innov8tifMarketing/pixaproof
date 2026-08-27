@@ -65,6 +65,59 @@ class SecurityHeadersTest extends TestCase
         $this->assertStringContainsString('googletagmanager.com', $policy);
     }
 
+    public function test_report_only_policy_uses_a_nonce_instead_of_unsafe_inline(): void
+    {
+        $policy = (string) $this->get('/')->headers->get('Content-Security-Policy-Report-Only');
+
+        $this->assertMatchesRegularExpression("/script-src [^;]*'nonce-[A-Za-z0-9]+'/", $policy);
+        $this->assertMatchesRegularExpression("/style-src [^;]*'nonce-[A-Za-z0-9]+'/", $policy);
+        $this->assertStringNotContainsString("'unsafe-inline'", $policy);
+    }
+
+    public function test_unsafe_eval_remains_as_the_documented_alpine_exception(): void
+    {
+        $policy = (string) $this->get('/')->headers->get('Content-Security-Policy-Report-Only');
+
+        $this->assertStringContainsString("'unsafe-eval'", $policy, 'Alpine evaluates x- expressions at runtime.');
+        $this->assertStringNotContainsString("'strict-dynamic'", $policy, "'strict-dynamic' would void the GTM host allowlist.");
+    }
+
+    public function test_the_nonce_is_regenerated_per_request(): void
+    {
+        $extract = function (string $policy): string {
+            preg_match("/'nonce-([A-Za-z0-9]+)'/", $policy, $matches);
+
+            return $matches[1] ?? '';
+        };
+
+        $first = $extract((string) $this->get('/')->headers->get('Content-Security-Policy-Report-Only'));
+        $second = $extract((string) $this->get('/')->headers->get('Content-Security-Policy-Report-Only'));
+
+        $this->assertNotSame('', $first);
+        $this->assertNotSame($first, $second, 'A reused nonce is no better than unsafe-inline.');
+    }
+
+    #[DataProvider('pageProvider')]
+    public function test_no_inline_script_or_style_is_rendered_without_the_nonce(string $path): void
+    {
+        $response = $this->get($path);
+        $html = $response->getContent();
+
+        $policy = (string) $response->headers->get('Content-Security-Policy-Report-Only');
+        preg_match("/'nonce-([A-Za-z0-9]+)'/", $policy, $matches);
+        $nonce = $matches[1];
+
+        preg_match_all('/<(script|style)(?![^>]*\ssrc=)([^>]*)>/i', $html, $tags, PREG_SET_ORDER);
+
+        foreach ($tags as [$tag, $element, $attributes]) {
+            $this->assertStringContainsString(
+                'nonce="'.$nonce.'"',
+                $attributes,
+                "Inline <{$element}> on {$path} is missing the CSP nonce: {$tag}",
+            );
+        }
+    }
+
     public function test_both_policies_advertise_the_report_endpoint(): void
     {
         $response = $this->get('/');
