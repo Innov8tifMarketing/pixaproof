@@ -2,18 +2,6 @@ import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-/**
- * Writes sha384 integrity hashes into the Vite manifest so Laravel's @vite
- * directive emits integrity="..." on the tags it renders.
- *
- * Runs in writeBundle rather than generateBundle: Vite's own manifest plugin is
- * a post plugin, so a user plugin's generateBundle fires before the manifest
- * asset exists. Rollup/Rolldown flush every bundle file to disk before
- * writeBundle, which makes reading it back order-independent.
- *
- * Throws rather than no-ops when the manifest is missing — a build that
- * silently ships without integrity hashes is the failure mode worth avoiding.
- */
 export default function manifestSri() {
     let manifestPath;
 

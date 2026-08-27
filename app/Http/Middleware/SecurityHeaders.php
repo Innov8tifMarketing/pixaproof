@@ -18,17 +18,6 @@ class SecurityHeaders
     private const REPORT_GROUP = 'csp-endpoint';
 
     /**
-     * The staged migration target, served Report-Only until it soaks clean.
-     *
-     * 'unsafe-inline' is gone: every inline <script>/<style> we emit carries the
-     * per-request nonce, and Laravel stamps it on the @vite and @livewireScripts
-     * tags too. 'unsafe-eval' stays as an accepted, framework-required exception
-     * — Alpine (bundled by Livewire) evaluates its x- expression strings at
-     * runtime. Removing it needs @alpinejs/csp and an expression refactor.
-     *
-     * 'strict-dynamic' is deliberately absent: it would void the host allowlist
-     * below and break the Google Tag Manager and Analytics tags.
-     *
      * @return list<string>
      */
     private function reportOnlyCsp(string $nonce): array
@@ -64,6 +53,7 @@ class SecurityHeaders
             'X-Content-Type-Options' => 'nosniff',
             'Referrer-Policy' => 'strict-origin-when-cross-origin',
             'Permissions-Policy' => 'geolocation=(), microphone=(), camera=()',
+            'X-Permitted-Cross-Domain-Policies' => 'none',
             'Content-Security-Policy' => implode('; ', [...self::ENFORCED_CSP, ...$reporting]),
             'Content-Security-Policy-Report-Only' => implode('; ', [...$this->reportOnlyCsp($nonce), ...$reporting]),
             'Reporting-Endpoints' => self::REPORT_GROUP.'="'.route('csp.report').'"',
