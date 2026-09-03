@@ -27,7 +27,7 @@
                     <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 tracking-tight mb-6 transition-all duration-500 delay-100"
                         :class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
                         Stop Fake Images From Entering Your
-                        <span class="block"><x-rotating-text :words="['Item Lending', 'Insurance Claims', 'Product Delivery', 'eKYC Onboarding']" class="bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent" /> Workflows.</span>
+                        <span class="block"><x-rotating-text :words="['Item Lending', 'Insurance Claims', 'Product Delivery']" class="bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent" /> Workflows.</span>
                     </h1>
 
                     {{-- Subheadline --}}
