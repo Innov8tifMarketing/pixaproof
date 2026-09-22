@@ -62,7 +62,7 @@ These docs describe content that was planned as separate pages but has been cons
 
 ### Deployment
 - **Config**: `tech-stack.md` → nixpacks.toml, Coolify
-- **Environment**: See `CLAUDE.md` in project root
+- **Environment**: See `AGENTS.md` in project root
 
 ## Keyword Index
 
