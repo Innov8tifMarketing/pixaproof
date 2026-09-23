@@ -75,6 +75,7 @@ These docs describe content that was planned as separate pages but has been cons
 | Bento Grid | stylesheet-guidelines.md | Components |
 | Brand | pixaproof-company.md | Brand Identity |
 | Button | stylesheet-guidelines.md | Components |
+| Check List | architecture.md | Homepage Section Components |
 | Card | stylesheet-guidelines.md | Components |
 | Certifications | pixaproof-company.md | Certifications |
 | Company Section | pages/homepage.md | Section 7 |
@@ -87,6 +88,7 @@ These docs describe content that was planned as separate pages but has been cons
 | Hero | pages/homepage.md | Section 1 |
 | Homepage | pages/homepage.md | Full page |
 | How It Works | pages/homepage.md | Section 4 |
+| Icon Card | architecture.md | Homepage Section Components |
 | Industry Use Cases | pages/homepage.md | Section 5 |
 | Innov8tif | pixaproof-company.md | Parent Organization |
 | Layouts | architecture.md | Layout Hierarchy |
@@ -102,9 +104,11 @@ These docs describe content that was planned as separate pages but has been cons
 | Redirects | architecture.md | 301 Redirects |
 | Routes | architecture.md | Routes |
 | SDK | pixaproof-product.md | Enterprise Solutions |
+| Section Component | architecture.md | Homepage Section Components |
 | Section Pattern | stylesheet-guidelines.md | Structural Conventions |
 | Spacing | stylesheet-guidelines.md | Spacing |
 | Tailwind | tech-stack.md | Frontend |
+| Stat Component | architecture.md | Homepage Section Components |
 | Technology Section | pages/homepage.md | Section 6 |
 | Typography | stylesheet-guidelines.md | Typography |
 | Use Cases | pages/homepage.md | Section 5 |

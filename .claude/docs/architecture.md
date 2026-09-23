@@ -35,34 +35,17 @@ resources/
     ├── components/
     │   ├── navbar.blade.php            # Navigation with anchor links
     │   ├── footer.blade.php
-    │   ├── logo.blade.php
-    │   ├── badge.blade.php             # Pre-headline badges
-    │   ├── bento-grid.blade.php        # Responsive bento layout
-    │   ├── breadcrumb.blade.php
     │   ├── button.blade.php            # Button with variants/sizes
-    │   ├── card.blade.php              # Card base
-    │   ├── card/
-    │   │   ├── feature.blade.php       # Feature card
-    │   │   ├── problem.blade.php       # Problem/threat card
-    │   │   ├── process.blade.php       # Step card
-    │   │   └── stat.blade.php          # Statistic card
-    │   ├── flow-steps.blade.php        # Horizontal timeline
     │   ├── rotating-text.blade.php     # Animated text rotation
-    │   ├── section.blade.php           # Section wrapper
-    │   ├── vertical-tabs.blade.php     # Tab navigation
-    │   ├── graphics/
-    │   │   ├── hero-comparison.blade.php
-    │   │   ├── how-it-works-visual.blade.php
-    │   │   ├── industry-card.blade.php
-    │   │   ├── phone-mockup.blade.php
-    │   │   ├── prevention-visual.blade.php
-    │   │   ├── solution-flow.blade.php
-    │   │   └── stats-showcase.blade.php
-    │   └── patterns/
-    │       ├── circuit.blade.php
-    │       ├── grid.blade.php
-    │       ├── hexagonal.blade.php
-    │       └── waves.blade.php
+    │   ├── section.blade.php           # Reveal-on-scroll section shell + centered header
+    │   ├── check-list.blade.php        # <ul> of check-icon bullets (compact variant)
+    │   ├── icon-card.blade.php         # Heroicon tile + title + body (inline/stacked, inverted)
+    │   ├── stat.blade.php              # Animated counter / static figure for the stats strip
+    │   └── graphics/
+    │       ├── hero-comparison.blade.php
+    │       ├── phone-mockup.blade.php
+    │       ├── prevention-visual.blade.php
+    │       └── solution-flow.blade.php
     ├── emails/
     │   └── contact-form.blade.php
     ├── layouts/
@@ -71,7 +54,7 @@ resources/
     ├── livewire/
     │   └── contact-form.blade.php
     └── pages/
-        ├── home.blade.php              # Mega landing (9 sections, ~724 lines)
+        ├── home.blade.php              # Mega landing (~900 lines, data-driven sections)
         ├── contact.blade.php           # Demo request form (Livewire)
         ├── privacy.blade.php           # Privacy policy
         └── components.blade.php        # Component showcase (local dev only)
@@ -87,8 +70,8 @@ The homepage (`pages/home.blade.php`) contains 9 major sections accessed via anc
 | 2 | Problem Statement | `#challenge` | Verification Gap + Cost of Compensating Controls |
 | 3 | Solution Introduction | `#solution` | PixaProof value prop |
 | 4 | How It Works | `#how-it-works` | 3-step: Capture → Analyze → Deliver |
-| 5 | Use Cases | `#solutions` | Tabbed: Loan Draw, Insurance, KYC, Asset Verification |
-| 6 | Technology Highlights | `#technology` | Bento grid of PIEA capabilities |
+| 5 | Use Cases | `#solutions` | Tabbed: Loan Draw, Insurance, Field Operations & Assets (`$industries` array) |
+| 6 | Technology Highlights | `#technology` | Disabled (`@if (false)`) — data accuracy under review |
 | 7 | Company Credibility | `#about` | Innov8tif background, certifications, stats |
 | 8 | FAQ | `#faq` | Accordion with Alpine.js |
 | 9 | Final CTA | (bottom) | "Ready to Eliminate Image Fraud?" + Request Demo |
@@ -107,6 +90,9 @@ Reusable traits for Livewire components:
 1. `base.blade.php` - HTML skeleton, Inter font, Vite assets, CSRF
 2. `app.blade.php` - Extends base, adds `<x-navbar />` and `<x-footer />`
 3. Page views - Extend app layout via `@extends('layouts.app')`
+
+### Homepage Section Components
+Homepage sections 4–13 (except the scroll-scrubbed Challenge and the disabled Technology grid) are wrapped in `<x-section>`, which owns the `x-data="{ visible: false }"` / `x-intersect.once` reveal and the eyebrow / h2 / description header. Children may read the parent `visible` state (`<x-stat>` does). Repeated markup uses `<x-check-list>`, `<x-icon-card>` and `<x-stat>`; repeated copy lives in `@php` arrays (`$industries`, `$milestones`, `$comparisons`, `$faqs`) rendered via `@foreach`, so an industry or FAQ is added or removed in one place. Desktop copy is canonical for industries; the mobile accordion renders the same headline, body and bullets.
 
 ### Anchor Navigation
 Navbar links use `/#section-id` anchors instead of separate routes. CSS handles scroll offset:
@@ -185,3 +171,4 @@ section[id] {
 
 ---
 *Updated: 2026-02-09 - Rewritten to match current single-page mega landing architecture*
+*Updated: 2026-09-23 - Removed KYC Onboarding industry; added section, check-list, icon-card and stat components; homepage sections data-driven*
