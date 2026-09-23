@@ -20,7 +20,7 @@ class CspReportRouteTest extends TestCase
 
         $this->assertNotNull($route, "Route [{$routeName}] is not registered.");
 
-        return app(Router::class)->gatherRouteMiddleware($route);
+        return resolve(Router::class)->gatherRouteMiddleware($route);
     }
 
     public function test_session_and_forgery_middleware_are_stripped_from_the_collector(): void
