@@ -4,7 +4,6 @@ namespace Deployer;
 
 require 'recipe/laravel.php';
 
-
 set('application', 'Pixaproof');
 
 $origin = trim((string) shell_exec('git -C '.escapeshellarg(__DIR__).' config --get remote.origin.url 2>/dev/null'));
@@ -25,15 +24,15 @@ set('forward_agent', false);
 set('update_code_strategy', 'clone');
 set('env', ['GIT_LFS_SKIP_SMUDGE' => '1']);
 
-
 host('prod')
     ->setHostname('47.237.191.213')
     ->set('remote_user', 'deployer')
+    ->setIdentityFile('~/.ssh/alicloud-innov8tif.pub')
+    ->setSshArguments(['-o IdentitiesOnly=yes'])
     ->set('deploy_path', '/home/deployer/pixaproof')
     ->set('branch', 'main')
     ->set('labels', ['stage' => 'prod'])
     ->set('url', 'https://pixaproof.com');
-
 
 add('shared_dirs', [
     'data/sqlite',
@@ -54,13 +53,10 @@ set('storage_links', [
 
 set('queue_worker_name', fn () => 'pixaproof-'.getStage().'-worker');
 
-
 set('sqlite_path', '{{deploy_path}}/shared/data/sqlite/database.sqlite');
 set('migrate_backup_path', '{{deploy_path}}/shared/data/backups');
 
-
 set('migrate_backup_keep', 5);
-
 
 set('rclone_bin', '/home/deployer/bin/rclone');
 set('rclone_remote', 'b2');
@@ -76,11 +72,9 @@ set('offsite_media_paths', [
     'storage/app/private',
 ]);
 
-
 set('verify_timeout', 15);
 set('verify_retries', 5);
 set('verify_retry_delay', 2);
-
 
 function getStage(): string
 {
@@ -99,7 +93,6 @@ function offsitePruneKeep(string $rclone, string $path, int $keep): void
         run("{$rclone} deletefile --b2-hard-delete {$path}/{$files[$i]}");
     }
 }
-
 
 desc('Compare deploy/server/** against the live server and report drift');
 task('server:diff', function () {
@@ -272,7 +265,6 @@ task('db:restore', function () {
         run('cd {{deploy_path}}/current && {{bin/php}} artisan up');
     }
 });
-
 
 desc('Back up SQLite DB + media + .env offsite to Backblaze B2');
 task('backup:offsite', function () {
@@ -623,7 +615,6 @@ task('storage:link-custom', function () {
     }
 });
 
-
 desc('Pull git-lfs objects from remote after code checkout');
 task('lfs:pull', function () {
     $repo = get('repository');
@@ -653,7 +644,6 @@ task('lfs:pull', function () {
     info('git lfs pull failed — reused video assets from the live release');
 });
 
-
 after('deploy:update_code', 'lfs:pull');
 
 after('deploy:vendors', 'artisan:config:cache');
@@ -675,8 +665,7 @@ after('deploy:symlink', 'artisan:cache:refresh');
 
 after('artisan:storage:link', 'storage:link-custom');
 
-task('artisan:migrate', function () {
-})->hidden();
+task('artisan:migrate', function () {})->hidden();
 
 after('deploy:symlink', 'deploy:verify');
 
