@@ -8,23 +8,28 @@
     <section class="relative isolate overflow-hidden px-4 pt-32 pb-20 lg:pt-40 lg:pb-28">
         <div class="absolute inset-0 -z-10">
             <div class="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-primary-50/50"></div>
-            <div class="absolute inset-0 bg-[linear-gradient(to_right,#0ea5e910_1px,transparent_1px),linear-gradient(to_bottom,#0ea5e910_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+            <div
+                class="absolute inset-0 bg-[linear-gradient(to_right,#0ea5e910_1px,transparent_1px),linear-gradient(to_bottom,#0ea5e910_1px,transparent_1px)] bg-[size:4rem_4rem]"
+            ></div>
         </div>
 
         <div class="relative z-10 mx-auto max-w-3xl text-center">
-            <div class="inline-flex items-center gap-2 rounded-full border border-primary-500/40 bg-primary-500/10 px-4 py-2 mb-6">
+            <div
+                class="inline-flex items-center gap-2 rounded-full border border-primary-500/40 bg-primary-500/10 px-4 py-2 mb-6"
+            >
                 <svg class="h-4 w-4 text-primary-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
                 <span class="text-sm font-medium text-primary-600">Contact Sales</span>
             </div>
             <h1 class="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">Talk to Our Team</h1>
-            <p class="text-lg text-neutral-600 max-w-xl mx-auto mb-10">
-                Book a demo, discuss your use case, or explore integration options with our solutions team.
-            </p>
+            <p class="text-lg text-neutral-600 max-w-xl mx-auto mb-10">Book a demo, discuss your use case, or explore integration options with our solutions team.</p>
 
             {{-- Email CTA --}}
-            <a href="mailto:sales@innov8tif.com" class="inline-flex items-center gap-3 rounded-lg bg-accent-500 px-8 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-accent-600 hover:shadow-xl">
+            <a
+                href="mailto:sales@innov8tif.com"
+                class="inline-flex items-center gap-3 rounded-lg bg-accent-500 px-8 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-accent-600 hover:shadow-xl"
+            >
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
@@ -53,9 +58,7 @@
         <div class="mx-auto max-w-5xl px-4">
             <div class="text-center mb-12">
                 <h2 class="font-heading text-2xl md:text-3xl font-bold text-neutral-900 mb-4">Our Offices</h2>
-                <p class="text-neutral-600">
-                    Innov8tif Solutions serves 500+ clients across 10+ countries from our regional offices.
-                </p>
+                <p class="text-neutral-600">Innov8tif Solutions serves 500+ clients across 10+ countries from our regional offices.</p>
             </div>
 
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -65,12 +68,10 @@
                         <span class="text-lg">🇲🇾</span>
                         <h3 class="font-heading font-semibold text-neutral-900">Malaysia (HQ)</h3>
                     </div>
-                    <p class="text-sm text-neutral-600 leading-relaxed">
-                        Innov8tif Solutions Sdn Bhd<br>
-                        L9-2, Wisma Conlay,<br>
-                        1, Jalan USJ 10/1,<br>
-                        47620 Subang Jaya, Selangor
-                    </p>
+                    <p class="text-sm text-neutral-600 leading-relaxed">Innov8tif Solutions Sdn Bhd<br>
+                    L9-2, Wisma Conlay,<br>
+                    1, Jalan USJ 10/1,<br>
+                    47620 Subang Jaya, Selangor</p>
                 </div>
 
                 {{-- Singapore --}}
@@ -79,11 +80,9 @@
                         <span class="text-lg">🇸🇬</span>
                         <h3 class="font-heading font-semibold text-neutral-900">Singapore</h3>
                     </div>
-                    <p class="text-sm text-neutral-600 leading-relaxed">
-                        Innov8tif Solutions Pte Ltd<br>
-                        120 Robinson Road, #12-01,<br>
-                        Singapore 068913
-                    </p>
+                    <p class="text-sm text-neutral-600 leading-relaxed">Innov8tif Solutions Pte Ltd<br>
+                    120 Robinson Road, #12-01,<br>
+                    Singapore 068913</p>
                 </div>
 
                 {{-- Indonesia --}}
@@ -92,11 +91,9 @@
                         <span class="text-lg">🇮🇩</span>
                         <h3 class="font-heading font-semibold text-neutral-900">Indonesia</h3>
                     </div>
-                    <p class="text-sm text-neutral-600 leading-relaxed">
-                        PT. Innov8tif Karta Solusi<br>
-                        Xin Building, Jl. Kapten Tendean No.52,<br>
-                        Bandung City, West Java 40141
-                    </p>
+                    <p class="text-sm text-neutral-600 leading-relaxed">PT. Innov8tif Karta Solusi<br>
+                    Xin Building, Jl. Kapten Tendean No.52,<br>
+                    Bandung City, West Java 40141</p>
                 </div>
 
                 {{-- Cambodia --}}
@@ -105,11 +102,9 @@
                         <span class="text-lg">🇰🇭</span>
                         <h3 class="font-heading font-semibold text-neutral-900">Cambodia</h3>
                     </div>
-                    <p class="text-sm text-neutral-600 leading-relaxed">
-                        Innov8tif Solutions Co., Ltd.<br>
-                        No. 206D, Street Preah Norodom,<br>
-                        Sangkat Tonle Bassac, Phnom Penh
-                    </p>
+                    <p class="text-sm text-neutral-600 leading-relaxed">Innov8tif Solutions Co., Ltd.<br>
+                    No. 206D, Street Preah Norodom,<br>
+                    Sangkat Tonle Bassac, Phnom Penh</p>
                 </div>
 
                 {{-- Philippines --}}
@@ -118,17 +113,13 @@
                         <span class="text-lg">🇵🇭</span>
                         <h3 class="font-heading font-semibold text-neutral-900">Philippines</h3>
                     </div>
-                    <p class="text-sm text-neutral-600 leading-relaxed">
-                        7F, Finman Centre Building,<br>
-                        131 Tordesillas, Salcedo Village,<br>
-                        Makati City
-                    </p>
+                    <p class="text-sm text-neutral-600 leading-relaxed">7F, Finman Centre Building,<br>
+                    131 Tordesillas, Salcedo Village,<br>
+                    Makati City</p>
                 </div>
             </div>
 
-            <p class="mt-10 text-center text-sm text-neutral-500">
-                Built by the team behind 10M+ identity verifications across ASEAN — with ISO 27001:2022 certification and 3 granted patents.
-            </p>
+            <p class="mt-10 text-center text-sm text-neutral-500">Built by the team behind 10M+ identity verifications across ASEAN — with ISO 27001:2022 certification and 3 granted patents.</p>
         </div>
     </section>
 @endsection

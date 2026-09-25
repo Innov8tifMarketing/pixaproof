@@ -17,7 +17,13 @@
         <div class="flex h-16 items-center justify-between">
             <!-- Logo -->
             <a href="{{ route('home') }}" class="flex items-center">
-                <img src="{{ asset('images/pixaproof-wordmark.svg') }}" alt="PixaProof" width="1347" height="232" class="h-8 w-auto shrink-0">
+                <img
+                    src="{{ asset('images/pixaproof-wordmark.svg') }}"
+                    alt="PixaProof"
+                    width="1347"
+                    height="232"
+                    class="h-8 w-auto shrink-0"
+                >
             </a>
 
             <!-- Desktop Navigation -->
@@ -81,6 +87,7 @@
                 <button
                     @click="mobileMenuOpen = !mobileMenuOpen"
                     type="button"
+                    aria-label="Toggle menu"
                     class="rounded p-2 text-neutral-700 hover:bg-neutral-100 transition-colors duration-300"
                 >
                     <svg x-show="!mobileMenuOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -94,12 +101,7 @@
         </div>
 
         <!-- Mobile Navigation -->
-        <div
-            x-show="mobileMenuOpen"
-            x-collapse
-            x-cloak
-            class="border-t border-neutral-200 py-4 lg:hidden"
-        >
+        <div x-show="mobileMenuOpen" x-collapse x-cloak class="border-t border-neutral-200 py-4 lg:hidden">
             <div class="transition-colors duration-300">
                 <a
                     href="{{ route('home') }}"

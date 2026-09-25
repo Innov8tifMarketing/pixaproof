@@ -57,10 +57,10 @@ Icons:
     };
 @endphp
 
-@if($href)
+@if ($href)
     <a href="{{ $href }}" {{ $attributes->merge(['class' => "{$baseClasses} {$variantClasses} {$sizeClasses}"]) }}>
         {{ $slot }}
-        @if($showIcon)
+        @if ($showIcon)
             <svg class="{{ $iconSize }}" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
@@ -69,7 +69,7 @@ Icons:
 @else
     <button type="{{ $type }}" {{ $attributes->merge(['class' => "{$baseClasses} {$variantClasses} {$sizeClasses}"]) }}>
         {{ $slot }}
-        @if($showIcon)
+        @if ($showIcon)
             <svg class="{{ $iconSize }}" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>

@@ -23,8 +23,17 @@ Props:
 ])
 
 <div {{ $attributes }}>
-    <div class="font-heading mb-2 text-4xl font-bold text-white md:text-5xl" x-show="visible" x-transition
-        @if ($text !== null) x-text="visible ? {{ Js::from($text) }} : '0'"
-        @else x-init="$watch('visible', v => { if (v) Motion.animateCounter($el, {{ Js::from((int) $value) }}, {{ Js::from($suffix) }}) })" @endif>0</div>
+    <div
+        class="font-heading mb-2 text-4xl font-bold text-white md:text-5xl"
+        x-show="visible"
+        x-transition
+        @if ($text !== null)
+            x-text="visible ? {{ Js::from($text) }} : '0'"
+        @else
+            x-init="$watch('visible', v => { if (v) Motion.animateCounter($el, {{ Js::from((int) $value) }}, {{ Js::from($suffix) }}) })"
+        @endif
+    >
+        0
+    </div>
     <div class="text-primary-100 font-heading text-sm uppercase tracking-wider">{{ $label }}</div>
 </div>

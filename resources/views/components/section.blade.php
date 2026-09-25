@@ -46,14 +46,20 @@ Slots:
     $hasHeader = filled($eyebrow) || filled($title) || filled($description);
 @endphp
 
-<section @if ($id) id="{{ $id }}" @endif {{ $attributes->merge(['class' => $padding]) }} x-data="{ visible: false }"
-    x-intersect.once="{{ $intersect }}">
+<section
+    @if ($id) id="{{ $id }}" @endif
+    {{ $attributes->merge(['class' => $padding]) }}
+    x-data="{ visible: false }"
+    x-intersect.once="{{ $intersect }}"
+>
     @isset($background)
         {{ $background }}
     @endisset
 
-    <div class="relative mx-auto {{ $width }} px-4 transition-all duration-700 ease-out"
-        :class="visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'">
+    <div
+        class="relative mx-auto {{ $width }} px-4 transition-all duration-700 ease-out"
+        :class="visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+    >
         @if ($hasHeader)
             <div class="{{ $headerSpacing }} text-center">
                 @if (filled($eyebrow))

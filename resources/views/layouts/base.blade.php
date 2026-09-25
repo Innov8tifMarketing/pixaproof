@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +8,10 @@
     @include('partials.google-analytics')
 
     @hasSection('title')
-        <title>@yield('title') - {{ config('app.name') }}</title>
+        <title>
+            @yield('title')
+            - {{ config('app.name') }}
+        </title>
     @else
         <title>{{ config('app.name') }}</title>
     @endif
@@ -18,8 +20,10 @@
     @hasSection('description')
         <meta name="description" content="@yield('description')">
     @else
-        <meta name="description"
-            content="PixaProof verifies image authenticity at the point of capture — stopping fraudulent photos, AI-generated documents, and tampered evidence before they enter your workflow.">
+        <meta
+            name="description"
+            content="PixaProof verifies image authenticity at the point of capture — stopping fraudulent photos, AI-generated documents, and tampered evidence before they enter your workflow."
+        >
     @endif
 
     {{-- Canonical URL --}}
@@ -36,8 +40,10 @@
     @hasSection('description')
         <meta property="og:description" content="@yield('description')">
     @else
-        <meta property="og:description"
-            content="PixaProof verifies image authenticity at the point of capture — stopping fraudulent photos, AI-generated documents, and tampered evidence before they enter your workflow.">
+        <meta
+            property="og:description"
+            content="PixaProof verifies image authenticity at the point of capture — stopping fraudulent photos, AI-generated documents, and tampered evidence before they enter your workflow."
+        >
     @endif
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ asset('images/og-image.webp') }}">
@@ -54,8 +60,10 @@
     @hasSection('description')
         <meta name="twitter:description" content="@yield('description')">
     @else
-        <meta name="twitter:description"
-            content="PixaProof verifies image authenticity at the point of capture — stopping fraudulent photos, AI-generated documents, and tampered evidence before they enter your workflow.">
+        <meta
+            name="twitter:description"
+            content="PixaProof verifies image authenticity at the point of capture — stopping fraudulent photos, AI-generated documents, and tampered evidence before they enter your workflow."
+        >
     @endif
     <meta name="twitter:image" content="{{ asset('images/og-image.webp') }}">
 
@@ -83,5 +91,4 @@
 
     @yield('body')
 </body>
-
 </html>

@@ -6,27 +6,43 @@ Shows three-panel comparison: Live Capture (Protected) vs Tampered Photos (Block
 <div class="relative">
     {{-- Background glow --}}
     <div class="absolute inset-0 -z-10">
-        <div class="absolute left-1/4 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-500/10 blur-3xl"></div>
-        <div class="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-500/10 blur-3xl"></div>
-        <div class="absolute left-3/4 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-500/10 blur-3xl"></div>
+        <div
+            class="absolute left-1/4 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-500/10 blur-3xl"
+        ></div>
+        <div
+            class="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-500/10 blur-3xl"
+        ></div>
+        <div
+            class="absolute left-3/4 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-500/10 blur-3xl"
+        ></div>
     </div>
 
     <div class="grid gap-6 md:grid-cols-3">
         {{-- Live Capture - Protected --}}
         <div class="group relative flex">
-            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-green-500/20 to-transparent opacity-0 transition group-hover:opacity-100"></div>
-            <div class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4">
+            <div
+                class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-green-500/20 to-transparent opacity-0 transition group-hover:opacity-100"
+            ></div>
+            <div
+                class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4"
+            >
                 {{-- Status Badge --}}
-                <div class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-green-100 border border-green-300 px-2 py-1">
+                <div
+                    class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-green-100 border border-green-300 px-2 py-1"
+                >
                     <svg class="h-3 w-3 text-green-700" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <span class="text-xs font-medium text-green-700">Protected</span>
                 </div>
 
                 {{-- Phone mockup with camera overlay --}}
                 {{-- Phone mockup with camera overlay --}}
-                <x-graphics.phone-mockup size="md" image="images/mockups/hero-live-capture.webp" imageAlt="Live camera capture of vehicle damage">
+                <x-graphics.phone-mockup
+                    size="md"
+                    image="images/mockups/hero-live-capture.webp"
+                    imageAlt="Live camera capture of vehicle damage"
+                >
                     <div class="flex h-full w-full flex-col">
                         {{-- Top bar with dark overlay --}}
                         <div class="bg-black/70 flex items-center justify-between px-3 pt-5 pb-1">
@@ -44,10 +60,18 @@ Shows three-panel comparison: Live Capture (Protected) vs Tampered Photos (Block
                         <div class="flex flex-1 items-center justify-center px-4">
                             <div class="relative aspect-square w-full">
                                 {{-- Corner brackets --}}
-                                <div class="absolute left-0 top-0 h-3 w-3 border-l-2 border-t-2 border-white/80 rounded-tl-sm"></div>
-                                <div class="absolute right-0 top-0 h-3 w-3 border-r-2 border-t-2 border-white/80 rounded-tr-sm"></div>
-                                <div class="absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-white/80 rounded-bl-sm"></div>
-                                <div class="absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-white/80 rounded-br-sm"></div>
+                                <div
+                                    class="absolute left-0 top-0 h-3 w-3 border-l-2 border-t-2 border-white/80 rounded-tl-sm"
+                                ></div>
+                                <div
+                                    class="absolute right-0 top-0 h-3 w-3 border-r-2 border-t-2 border-white/80 rounded-tr-sm"
+                                ></div>
+                                <div
+                                    class="absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-white/80 rounded-bl-sm"
+                                ></div>
+                                <div
+                                    class="absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-white/80 rounded-br-sm"
+                                ></div>
                             </div>
                         </div>
 
@@ -60,25 +84,36 @@ Shows three-panel comparison: Live Capture (Protected) vs Tampered Photos (Block
 
                 <div class="mt-4 text-center">
                     <h4 class="font-semibold text-neutral-900">Accept Only Live Capture</h4>
-                    <p class="mt-1 text-xs text-neutral-500">Prevents spoofing and injecting attacks </p>
+                    <p class="mt-1 text-xs text-neutral-500">Prevents spoofing and injecting attacks</p>
                 </div>
             </div>
         </div>
 
         {{-- Tampered Photos - Blocked --}}
         <div class="group relative flex">
-            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-red-500/20 to-transparent opacity-0 transition group-hover:opacity-100"></div>
-            <div class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4">
+            <div
+                class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-red-500/20 to-transparent opacity-0 transition group-hover:opacity-100"
+            ></div>
+            <div
+                class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4"
+            >
                 {{-- Status Badge --}}
-                <div class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-red-100 border border-red-300 px-2 py-1">
+                <div
+                    class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-red-100 border border-red-300 px-2 py-1"
+                >
                     <svg class="h-3 w-3 text-red-700" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                        <path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                     </svg>
                     <span class="text-xs font-medium text-red-700">Flagged</span>
                 </div>
 
                 {{-- Phone mockup with gallery image + error overlay --}}
-                <x-graphics.phone-mockup size="md" image="images/mockups/hero-tampered-gallery.webp" imageAlt="Tampered gallery photo" variant="error" />
+                <x-graphics.phone-mockup
+                    size="md"
+                    image="images/mockups/hero-tampered-gallery.webp"
+                    imageAlt="Tampered gallery photo"
+                    variant="error"
+                />
 
                 <div class="mt-4 text-center">
                     <h4 class="font-semibold text-neutral-900">Detect Edited Photos</h4>
@@ -89,18 +124,29 @@ Shows three-panel comparison: Live Capture (Protected) vs Tampered Photos (Block
 
         {{-- AI Generated - Detected --}}
         <div class="group relative flex">
-            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-yellow-500/20 to-transparent opacity-0 transition group-hover:opacity-100"></div>
-            <div class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4">
+            <div
+                class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-yellow-500/20 to-transparent opacity-0 transition group-hover:opacity-100"
+            ></div>
+            <div
+                class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4"
+            >
                 {{-- Status Badge --}}
-                <div class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-amber-100 border border-amber-300 px-2 py-1">
+                <div
+                    class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-amber-100 border border-amber-300 px-2 py-1"
+                >
                     <svg class="h-3 w-3 text-amber-700" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+                        <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                     </svg>
                     <span class="text-xs font-medium text-amber-700">Detected</span>
                 </div>
 
                 {{-- Phone mockup with AI image + scanning overlay --}}
-                <x-graphics.phone-mockup size="md" image="images/mockups/hero-ai-generated-id.webp" imageAlt="AI generated document" variant="scanning" />
+                <x-graphics.phone-mockup
+                    size="md"
+                    image="images/mockups/hero-ai-generated-id.webp"
+                    imageAlt="AI generated document"
+                    variant="scanning"
+                />
 
                 <div class="mt-4 text-center">
                     <h4 class="font-semibold text-neutral-900">Flag AI Image Submissions</h4>

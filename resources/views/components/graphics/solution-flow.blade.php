@@ -15,8 +15,12 @@
             </svg>
         </div>
         {{-- Badge --}}
-        <div class="mt-4 inline-flex items-center gap-2 rounded-full bg-primary-500/10 px-3 py-1 text-sm font-medium text-primary-600">
-            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-primary-500 text-xs text-white">1</span>
+        <div
+            class="mt-4 inline-flex items-center gap-2 rounded-full bg-primary-500/10 px-3 py-1 text-sm font-medium text-primary-600"
+        >
+            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-primary-500 text-xs text-white"
+                >1</span
+            >
             Secure Capture
         </div>
         {{-- Description --}}
@@ -39,8 +43,12 @@
             </svg>
         </div>
         {{-- Badge --}}
-        <div class="mt-4 inline-flex items-center gap-2 rounded-full bg-primary-500/10 px-3 py-1 text-sm font-medium text-primary-600">
-            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-primary-500 text-xs text-white">2</span>
+        <div
+            class="mt-4 inline-flex items-center gap-2 rounded-full bg-primary-500/10 px-3 py-1 text-sm font-medium text-primary-600"
+        >
+            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-primary-500 text-xs text-white"
+                >2</span
+            >
             Reliable Transmission
         </div>
         {{-- Description --}}
@@ -63,7 +71,9 @@
             </svg>
         </div>
         {{-- Badge --}}
-        <div class="mt-4 inline-flex items-center gap-2 rounded-full bg-green-500/10 px-3 py-1 text-sm font-medium text-green-600">
+        <div
+            class="mt-4 inline-flex items-center gap-2 rounded-full bg-green-500/10 px-3 py-1 text-sm font-medium text-green-600"
+        >
             <span class="flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs text-white">3</span>
             Instant Verification
         </div>

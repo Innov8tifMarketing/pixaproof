@@ -19,6 +19,7 @@
         "deployer/deployer": "^7.5",
         "driftingly/rector-laravel": "^2.6",
         "fakerphp/faker": "^1.23",
+        "fortephp/sheath": "^1.0",
         "larastan/larastan": "^3.0",
         "laravel/boost": "^2.1",
         "laravel/pail": "^1.2.2",

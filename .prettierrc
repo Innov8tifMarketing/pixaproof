@@ -1,0 +1,21 @@
+{
+    "printWidth": 120,
+    "tabWidth": 4,
+    "singleQuote": true,
+    "plugins": ["prettier-plugin-blade", "prettier-plugin-tailwindcss"],
+    "tailwindStylesheet": "./resources/css/app.css",
+    "embeddedLanguageFormatting": "off",
+    "overrides": [
+        {
+            "files": ["*.blade.php"],
+            "options": {
+                "parser": "blade",
+                "bladePhpFormatting": "off",
+                "bladeDirectiveCase": "canonical",
+                "bladeEchoSpacing": "space",
+                "bladeDirectiveArgSpacing": "none",
+                "bladeVoidElementSlash": "preserve"
+            }
+        }
+    ]
+}
