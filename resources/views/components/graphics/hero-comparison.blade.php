@@ -6,30 +6,18 @@ Shows three-panel comparison: Live Capture (Protected) vs Tampered Photos (Block
 <div class="relative">
     {{-- Background glow --}}
     <div class="absolute inset-0 -z-10">
-        <div
-            class="absolute left-1/4 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-500/10 blur-3xl"
-        ></div>
-        <div
-            class="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-500/10 blur-3xl"
-        ></div>
-        <div
-            class="absolute left-3/4 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-500/10 blur-3xl"
-        ></div>
+        <div class="absolute top-1/2 left-1/4 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-500/10 blur-3xl"></div>
+        <div class="bg-primary-500/10 absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-3/4 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-500/10 blur-3xl"></div>
     </div>
 
     <div class="grid gap-6 md:grid-cols-3">
         {{-- Live Capture - Protected --}}
         <div class="group relative flex">
-            <div
-                class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-green-500/20 to-transparent opacity-0 transition group-hover:opacity-100"
-            ></div>
-            <div
-                class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4"
-            >
+            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-green-500/20 to-transparent opacity-0 transition group-hover:opacity-100"></div>
+            <div class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4">
                 {{-- Status Badge --}}
-                <div
-                    class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-green-100 border border-green-300 px-2 py-1"
-                >
+                <div class="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full border border-green-300 bg-green-100 px-2 py-1">
                     <svg class="h-3 w-3 text-green-700" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -45,7 +33,7 @@ Shows three-panel comparison: Live Capture (Protected) vs Tampered Photos (Block
                 >
                     <div class="flex h-full w-full flex-col">
                         {{-- Top bar with dark overlay --}}
-                        <div class="bg-black/70 flex items-center justify-between px-3 pt-5 pb-1">
+                        <div class="flex items-center justify-between bg-black/70 px-3 pt-5 pb-1">
                             <svg class="h-3 w-3 text-white/70" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                             </svg>
@@ -53,25 +41,19 @@ Shows three-panel comparison: Live Capture (Protected) vs Tampered Photos (Block
                             <div class="w-3"></div>
                         </div>
                         <div class="bg-black/70 px-3 pb-2">
-                            <p class="text-center text-[0.45rem] font-medium text-white">Capture photo of vehicle damage</p>
+                            <p class="text-center text-[0.45rem] font-medium text-white">
+                                Capture photo of vehicle damage
+                            </p>
                         </div>
 
                         {{-- Square viewfinder --}}
                         <div class="flex flex-1 items-center justify-center px-4">
                             <div class="relative aspect-square w-full">
                                 {{-- Corner brackets --}}
-                                <div
-                                    class="absolute left-0 top-0 h-3 w-3 border-l-2 border-t-2 border-white/80 rounded-tl-sm"
-                                ></div>
-                                <div
-                                    class="absolute right-0 top-0 h-3 w-3 border-r-2 border-t-2 border-white/80 rounded-tr-sm"
-                                ></div>
-                                <div
-                                    class="absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-white/80 rounded-bl-sm"
-                                ></div>
-                                <div
-                                    class="absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-white/80 rounded-br-sm"
-                                ></div>
+                                <div class="absolute top-0 left-0 h-3 w-3 rounded-tl-sm border-t-2 border-l-2 border-white/80"></div>
+                                <div class="absolute top-0 right-0 h-3 w-3 rounded-tr-sm border-t-2 border-r-2 border-white/80"></div>
+                                <div class="absolute bottom-0 left-0 h-3 w-3 rounded-bl-sm border-b-2 border-l-2 border-white/80"></div>
+                                <div class="absolute right-0 bottom-0 h-3 w-3 rounded-br-sm border-r-2 border-b-2 border-white/80"></div>
                             </div>
                         </div>
 
@@ -91,16 +73,10 @@ Shows three-panel comparison: Live Capture (Protected) vs Tampered Photos (Block
 
         {{-- Tampered Photos - Blocked --}}
         <div class="group relative flex">
-            <div
-                class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-red-500/20 to-transparent opacity-0 transition group-hover:opacity-100"
-            ></div>
-            <div
-                class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4"
-            >
+            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-red-500/20 to-transparent opacity-0 transition group-hover:opacity-100"></div>
+            <div class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4">
                 {{-- Status Badge --}}
-                <div
-                    class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-red-100 border border-red-300 px-2 py-1"
-                >
+                <div class="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full border border-red-300 bg-red-100 px-2 py-1">
                     <svg class="h-3 w-3 text-red-700" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                     </svg>
@@ -124,16 +100,10 @@ Shows three-panel comparison: Live Capture (Protected) vs Tampered Photos (Block
 
         {{-- AI Generated - Detected --}}
         <div class="group relative flex">
-            <div
-                class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-yellow-500/20 to-transparent opacity-0 transition group-hover:opacity-100"
-            ></div>
-            <div
-                class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4"
-            >
+            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-b from-yellow-500/20 to-transparent opacity-0 transition group-hover:opacity-100"></div>
+            <div class="relative flex w-full flex-col items-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-4">
                 {{-- Status Badge --}}
-                <div
-                    class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-amber-100 border border-amber-300 px-2 py-1"
-                >
+                <div class="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full border border-amber-300 bg-amber-100 px-2 py-1">
                     <svg class="h-3 w-3 text-amber-700" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                     </svg>

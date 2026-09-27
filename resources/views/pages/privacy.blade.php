@@ -11,7 +11,10 @@
 
             <div class="prose prose-lg mt-8">
                 <h2 class="text-2xl font-semibold text-neutral-900">Introduction</h2>
-                <p class="text-neutral-700">PixaProof ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our mobile application.</p>
+                <p class="text-neutral-700">
+                    PixaProof ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy
+                    explains how we collect, use, and safeguard your information when you use our mobile application.
+                </p>
 
                 <h2 class="mt-8 text-2xl font-semibold text-neutral-900">Information We Collect</h2>
                 <p class="text-neutral-700">When you use PixaProof, we may collect:</p>
@@ -30,10 +33,17 @@
                 </ul>
 
                 <h2 class="mt-8 text-2xl font-semibold text-neutral-900">Data Security</h2>
-                <p class="text-neutral-700">We implement appropriate security measures to protect your information. Images submitted for verification are processed in real-time and are not stored on our servers after analysis is complete.</p>
+                <p class="text-neutral-700">
+                    We implement appropriate security measures to protect your information. Images submitted for
+                    verification are processed in real-time and are not stored on our servers after analysis is
+                    complete.
+                </p>
 
                 <h2 class="mt-8 text-2xl font-semibold text-neutral-900">Contact Us</h2>
-                <p class="text-neutral-700">If you have questions about this Privacy Policy, please <a href="{{ route('contact') }}" class="text-primary-600 hover:text-primary-500">contact us</a>.</p>
+                <p class="text-neutral-700">
+                    If you have questions about this Privacy Policy, please
+                    <a href="{{ route('contact') }}" class="text-primary-600 hover:text-primary-500">contact us</a>.
+                </p>
             </div>
         </div>
     </section>

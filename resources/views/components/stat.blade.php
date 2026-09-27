@@ -35,5 +35,5 @@ Props:
     >
         0
     </div>
-    <div class="text-primary-100 font-heading text-sm uppercase tracking-wider">{{ $label }}</div>
+    <div class="text-primary-100 font-heading text-sm tracking-wider uppercase">{{ $label }}</div>
 </div>

@@ -17,7 +17,7 @@
 
         startRotation() {
             setInterval(() => {
-                if (!this.isAnimating) {
+                if (! this.isAnimating) {
                     this.swapWord();
                 }
             }, this.interval);

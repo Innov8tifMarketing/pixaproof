@@ -6,7 +6,7 @@
             src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}"
             height="0"
             width="0"
-            class="hidden invisible"
+            class="invisible hidden"
         ></iframe
     ></noscript>
     {{-- sheath-enable a11y-require-frame-title --}}

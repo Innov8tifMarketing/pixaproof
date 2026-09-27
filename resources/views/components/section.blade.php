@@ -63,7 +63,9 @@ Slots:
         @if ($hasHeader)
             <div class="{{ $headerSpacing }} text-center">
                 @if (filled($eyebrow))
-                    <p class="text-primary-600 font-heading mb-4 text-sm font-semibold uppercase tracking-wider">{{ $eyebrow }}</p>
+                    <p class="text-primary-600 font-heading mb-4 text-sm font-semibold tracking-wider uppercase">
+                        {{ $eyebrow }}
+                    </p>
                 @endif
                 @if (filled($title))
                     <h2 class="font-heading mb-6 text-3xl font-bold text-neutral-900 md:text-4xl">{{ $title }}</h2>

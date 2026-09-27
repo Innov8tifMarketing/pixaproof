@@ -37,20 +37,20 @@ Icons:
 
     $baseClasses = 'inline-flex items-center justify-center font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2';
 
-    $variantClasses = match($variant) {
+    $variantClasses = match ($variant) {
         'secondary' => 'border border-primary-600 text-primary-700 hover:bg-primary-50',
         'ghost' => 'text-primary-600 hover:text-primary-700 hover:underline',
         'outline' => 'border border-neutral-300 text-neutral-700 hover:bg-neutral-50',
         default => 'bg-accent-500 text-white hover:bg-accent-600 shadow-sm',
     };
 
-    $sizeClasses = match($size) {
+    $sizeClasses = match ($size) {
         'sm' => 'px-4 py-2 text-sm gap-1.5',
         'lg' => 'px-8 py-4 text-lg gap-3',
         default => 'px-6 py-3 text-base gap-2',
     };
 
-    $iconSize = match($size) {
+    $iconSize = match ($size) {
         'sm' => 'h-3.5 w-3.5',
         'lg' => 'h-5 w-5',
         default => 'h-4 w-4',

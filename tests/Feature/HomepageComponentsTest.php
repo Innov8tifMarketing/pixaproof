@@ -42,7 +42,7 @@ class HomepageComponentsTest extends TestCase
         $this->assertStringContainsString('x-data="{ visible: false }"', $html);
         $this->assertStringContainsString('x-intersect.once="visible = true"', $html);
         $this->assertStringContainsString('class="py-20 lg:py-28 bg-white"', $html);
-        $this->assertMatchesRegularExpression('/<p class="[^"]*uppercase[^"]*">FAQ<\/p>/', $html);
+        $this->assertMatchesRegularExpression('/<p class="[^"]*uppercase[^"]*">\s*FAQ\s*<\/p>/', $html);
         $this->assertMatchesRegularExpression('/<h2 class="[^"]*">Questions<\/h2>/', $html);
         $this->assertMatchesRegularExpression('/<p class="mx-auto max-w-3xl [^"]*">Answers here<\/p>/', $html);
         $this->assertStringContainsString('max-w-7xl', $html);

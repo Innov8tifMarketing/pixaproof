@@ -8,28 +8,26 @@
     {{-- Step 1: Secure Capture --}}
     <div class="flex flex-col items-center rounded-2xl border border-neutral-200 bg-white p-6 text-center shadow-sm">
         {{-- Icon --}}
-        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-primary-500/10">
-            <svg class="h-7 w-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <div class="bg-primary-500/10 flex h-14 w-14 items-center justify-center rounded-full">
+            <svg class="text-primary-600 h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
             </svg>
         </div>
         {{-- Badge --}}
-        <div
-            class="mt-4 inline-flex items-center gap-2 rounded-full bg-primary-500/10 px-3 py-1 text-sm font-medium text-primary-600"
-        >
-            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-primary-500 text-xs text-white"
-                >1</span
-            >
+        <div class="bg-primary-500/10 text-primary-600 mt-4 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
+            <span class="bg-primary-500 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white">1</span>
             Secure Capture
         </div>
         {{-- Description --}}
-        <p class="mt-3 text-sm text-neutral-700">The Web SDK captures device metadata to verify live photos and flag gallery uploads or emulators.</p>
+        <p class="mt-3 text-sm text-neutral-700">
+            The Web SDK captures device metadata to verify live photos and flag gallery uploads or emulators.
+        </p>
     </div>
 
     {{-- Arrow 1→2 --}}
     <div class="hidden items-center md:flex">
-        <svg class="h-6 w-6 text-primary-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <svg class="text-primary-400 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
         </svg>
     </div>
@@ -37,27 +35,25 @@
     {{-- Step 2: Reliable Transmission --}}
     <div class="flex flex-col items-center rounded-2xl border border-neutral-200 bg-white p-6 text-center shadow-sm">
         {{-- Icon --}}
-        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-primary-500/10">
-            <svg class="h-7 w-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <div class="bg-primary-500/10 flex h-14 w-14 items-center justify-center rounded-full">
+            <svg class="text-primary-600 h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
             </svg>
         </div>
         {{-- Badge --}}
-        <div
-            class="mt-4 inline-flex items-center gap-2 rounded-full bg-primary-500/10 px-3 py-1 text-sm font-medium text-primary-600"
-        >
-            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-primary-500 text-xs text-white"
-                >2</span
-            >
+        <div class="bg-primary-500/10 text-primary-600 mt-4 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
+            <span class="bg-primary-500 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white">2</span>
             Reliable Transmission
         </div>
         {{-- Description --}}
-        <p class="mt-3 text-sm text-neutral-700">End-to-end encrypted with PIEA signature. Every image is sealed and tamper-evident from device to cloud.</p>
+        <p class="mt-3 text-sm text-neutral-700">
+            End-to-end encrypted with PIEA signature. Every image is sealed and tamper-evident from device to cloud.
+        </p>
     </div>
 
     {{-- Arrow 2→3 --}}
     <div class="hidden items-center md:flex">
-        <svg class="h-6 w-6 text-primary-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <svg class="text-primary-400 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
         </svg>
     </div>
@@ -71,13 +67,13 @@
             </svg>
         </div>
         {{-- Badge --}}
-        <div
-            class="mt-4 inline-flex items-center gap-2 rounded-full bg-green-500/10 px-3 py-1 text-sm font-medium text-green-600"
-        >
+        <div class="mt-4 inline-flex items-center gap-2 rounded-full bg-green-500/10 px-3 py-1 text-sm font-medium text-green-600">
             <span class="flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs text-white">3</span>
             Instant Verification
         </div>
         {{-- Description --}}
-        <p class="mt-3 text-sm text-neutral-700">35+ tamper tests run in under 500ms. AI-powered scanning delivers a clear pass or fail verdict in real time.</p>
+        <p class="mt-3 text-sm text-neutral-700">
+            35+ tamper tests run in under 500ms. AI-powered scanning delivers a clear pass or fail verdict in real time.
+        </p>
     </div>
 </div>
